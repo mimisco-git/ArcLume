@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArcLume Auth Callback</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="grid-overlay"></div>
+  <main class="shell docs-shell">
+    <section class="card glass">
+      <div class="card-header"><div><h3>Auth callback placeholder</h3><p>This page is included so future supported connected mode can land here, read query parameters, and return to the main dashboard.</p></div></div>
+      <div class="note">No Arc House token exchange is implemented here. Use this page only after you have a supported server-side auth flow.</div>
+      <div class="top-gap"><a class="btn btn-secondary" href="../index.html">Back to ArcLume</a></div>
+    </section>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const payload = Object.fromEntries(params.entries());
+    if (Object.keys(payload).length) {
+      localStorage.setItem('arclume_v8_auth_callback_payload', JSON.stringify({ payload, savedAt: new Date().toISOString() }));
+    }
+  </script>
+</body>
+</html>

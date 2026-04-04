@@ -1,6 +1,6 @@
-# ArcLume V7
+# ArcLume V8
 
-ArcLume V7 is a premium GitHub Pages site for:
+ArcLume V8 is a premium GitHub Pages site for:
 - live Arc Testnet wallet checks
 - Arcscan activity links
 - saved profile mode with wallet + email
@@ -42,3 +42,11 @@ Private Arc House profile data such as personal points, badges, and private cont
 ## Manual community refresh
 - In the UI, use **Refresh feed** to reload the latest `data/community.json` available in the deployed site.
 - In GitHub, you can also run the workflow manually from the Actions tab.
+
+
+## V8 additions
+- architect points planner and tier estimator
+- role eligibility planner based on public Architect docs
+- connected-mode readiness card
+- `runtime-config.js` for optional future connector configuration
+- `connected-mode.html` and example worker scaffolding for a future supported authenticated flow

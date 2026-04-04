@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArcLume Connected Mode</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <main class="shell docs-shell">
+    <section class="topbar glass">
+      <div class="brand">
+        <div class="brand-mark"><img src="./assets/arclume-logo-mark.svg" alt="" /></div>
+        <div class="brand-copy">
+          <h1>ArcLume Connected Mode</h1>
+          <p>Prepared for future authenticated Arc House connection without breaking the static site.</p>
+        </div>
+      </div>
+      <div class="top-actions"><a class="btn btn-secondary" href="./index.html">Back to dashboard</a></div>
+    </section>
+
+    <section class="card glass">
+      <div class="card-header">
+        <div>
+          <h3>What this page is for</h3>
+          <p>ArcLume V8 includes an optional connected mode. It is disabled by default and the main site remains fully functional without it.</p>
+        </div>
+        <div class="tag tag-primary">Auth-ready</div>
+      </div>
+      <div class="insight-grid">
+        <article class="insight"><h4>Static mode today</h4><p>The dashboard can already show live Arc wallet data and the public Arc House feed without any private integration.</p></article>
+        <article class="insight"><h4>Connected mode later</h4><p>When a supported Arc House authentication or profile flow is available, you can point ArcLume at your connector through <code>runtime-config.js</code>.</p></article>
+        <article class="insight"><h4>Files included</h4><p><code>runtime-config.js</code>, <code>runtime-config.example.js</code>, <code>auth/callback.html</code>, and <code>api/cloudflare-worker.example.js</code>.</p></article>
+        <article class="insight"><h4>Important boundary</h4><p>Do not place secrets in the static site. Keep any token exchange or profile retrieval on your worker or backend.</p></article>
+      </div>
+    </section>
+
+    <section class="card glass">
+      <div class="card-header"><div><h3>Suggested setup</h3><p>A minimal safe path for future connected mode.</p></div></div>
+      <ol class="ordered-list">
+        <li>Deploy the static ArcLume site to GitHub Pages as usual.</li>
+        <li>Deploy your worker or serverless adapter separately.</li>
+        <li>Update <code>runtime-config.js</code> with your public auth and profile endpoints.</li>
+        <li>Keep all credentials server-side only.</li>
+        <li>Use <code>auth/callback.html</code> for future redirect handling if your supported auth flow needs it.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

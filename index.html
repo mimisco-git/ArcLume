@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ArcLume V7, Live Arc Wallet + Auto-Updating Arc House Companion</title>
-  <meta name="description" content="ArcLume V7 is a premium Arc wallet and Arc House companion with saved profiles, smarter wallet insights, event filters, polished status states, a cleaner sign-in handoff, and an auto-updating public Arc House feed powered by GitHub Actions." />
+  <title>ArcLume V8, Arc Wallet + Arc House Planner + Connected Mode Ready</title>
+  <meta name="description" content="ArcLume V8 adds an architect points planner, role eligibility estimator, connected-mode readiness, saved profiles, smarter wallet insights, and an auto-updating public Arc House feed powered by GitHub Actions." />
   <meta name="theme-color" content="#07110d" />
-  <meta property="og:title" content="ArcLume V7" />
+  <meta property="og:title" content="ArcLume V8" />
   <meta property="og:description" content="Premium Arc wallet and Arc House companion dashboard." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="./assets/og-preview.svg" />
@@ -44,10 +44,10 @@
     <section class="hero glass">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow"><span class="pulse"></span> Wallet signal, identity prep, community route</div>
+          <div class="eyebrow"><span class="pulse"></span> Wallet signal, architect planning, connected-ready route</div>
           <h2><span class="gradient-text">A clearer path,</span> from Arc wallet to Arc House.</h2>
           <p>
-            ArcLume V7 adds saved profiles, smarter wallet insight cards, stronger empty and error states, richer event priority filters, and a cleaner Arc House sign-in handoff, while keeping private community data behind the login boundary.
+            ArcLume V8 adds saved profiles, smarter wallet insight cards, stronger empty and error states, richer event priority filters, and a cleaner Arc House sign-in handoff, while keeping private community data behind the login boundary.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#lookup">Start profile lookup</a>
@@ -86,7 +86,7 @@
                 Use your wallet address for Arc network intelligence and your email address to prepare a cleaner Arc House handoff. Save the profile locally, share a prefilled link, and resume where you left off.
               </p>
             </div>
-            <div class="tag tag-primary">V7 live feed</div>
+            <div class="tag tag-primary">V8 planner + feed</div>
           </div>
 
           <form class="dual-form" id="profileForm">
@@ -308,6 +308,54 @@
           </div>
           <div id="resourceGrid" class="resource-grid"></div>
         </section>
+
+<section class="card glass">
+  <div class="card-header">
+    <div>
+      <h3>Architect points planner</h3>
+      <p>Use public Arc House contribution rules to estimate how many points your planned actions could generate, what tier that could reach, and which roles become realistic next.</p>
+    </div>
+    <div class="tag tag-success">Planner</div>
+  </div>
+
+  <div class="planner-layout">
+    <div class="planner-grid" id="plannerGrid">
+      <label class="planner-item"><span>Finish onboarding</span><input id="planOnboarding" type="number" min="0" value="1" /></label>
+      <label class="planner-item"><span>Daily active days</span><input id="planDailyActive" type="number" min="0" value="7" /></label>
+      <label class="planner-item"><span>Event registrations</span><input id="planEventRegistration" type="number" min="0" value="2" /></label>
+      <label class="planner-item"><span>Event participation</span><input id="planEventParticipation" type="number" min="0" value="1" /></label>
+      <label class="planner-item"><span>Read content</span><input id="planReadContent" type="number" min="0" value="5" /></label>
+      <label class="planner-item"><span>Watch videos</span><input id="planWatchVideo" type="number" min="0" value="2" /></label>
+      <label class="planner-item"><span>Publish posts</span><input id="planPublishPost" type="number" min="0" value="1" /></label>
+      <label class="planner-item"><span>Comments / replies</span><input id="planComments" type="number" min="0" value="2" /></label>
+      <label class="planner-item"><span>Accepted answers</span><input id="planAcceptedAnswer" type="number" min="0" value="0" /></label>
+      <label class="planner-item"><span>Author content</span><input id="planAuthor" type="number" min="0" value="0" /></label>
+      <label class="planner-item"><span>ID verified</span><input id="planIdVerified" type="number" min="0" value="1" max="1" /></label>
+      <label class="planner-item"><span>Developer challenge wins</span><input id="planDeveloperChallenge" type="number" min="0" value="0" /></label>
+      <label class="planner-item"><span>Hackathon wins</span><input id="planHackathonWinner" type="number" min="0" value="0" /></label>
+      <label class="planner-item"><span>Course champion</span><input id="planCourseChampion" type="number" min="0" value="0" /></label>
+      <label class="planner-item"><span>Event speaker</span><input id="planEventSpeaker" type="number" min="0" value="0" /></label>
+      <label class="planner-item"><span>Webinar or meeting host</span><input id="planMeetingHost" type="number" min="0" value="0" /></label>
+    </div>
+
+    <div class="planner-summary-card glass-subtle">
+      <div class="mini-metrics insights-grid-3">
+        <article class="mini-stat"><span class="mini-stat-label">Estimated points</span><strong id="plannerTotalPoints">--</strong><small>Public-rules estimate only.</small></article>
+        <article class="mini-stat"><span class="mini-stat-label">Estimated tier</span><strong id="plannerTier">Tier 0</strong><small>Based on public tier thresholds.</small></article>
+        <article class="mini-stat"><span class="mini-stat-label">Next milestone</span><strong id="plannerNextMilestone">500</strong><small>Points needed for the next tier.</small></article>
+        <article class="mini-stat"><span class="mini-stat-label">Likely role window</span><strong id="plannerRoles">None yet</strong><small>Based on public Architect role docs.</small></article>
+        <article class="mini-stat"><span class="mini-stat-label">Progress to next tier</span><strong id="plannerProgress">0%</strong><small>Planner-only estimate.</small></article>
+        <article class="mini-stat"><span class="mini-stat-label">Suggested focus</span><strong id="plannerFocus">Onboarding + events</strong><small>Most efficient next public actions.</small></article>
+      </div>
+      <div class="planner-breakdown top-gap" id="plannerBreakdown"></div>
+      <div class="sub-actions top-gap">
+        <button class="ghost-btn" type="button" id="copyPlannerSummary">Copy planner summary</button>
+        <button class="ghost-btn" type="button" id="resetPlanner">Reset planner</button>
+      </div>
+    </div>
+  </div>
+</section>
+
       </div>
 
       <aside class="stack">
@@ -328,11 +376,33 @@
           </div>
         </section>
 
+
+<section class="card glass">
+  <div class="card-header">
+    <div>
+      <h3>Connected mode readiness</h3>
+      <p>ArcLume stays fully working as a static site, but it is now prepared for a future supported authenticated connector when one exists.</p>
+    </div>
+    <div class="tag tag-accent" id="connectorModeTag">Static mode</div>
+  </div>
+  <div class="status-list">
+    <div class="status-row"><span>Connector state</span><span id="connectorStatus">Not configured</span></div>
+    <div class="status-row"><span>Auth endpoint</span><span id="connectorAuthEndpoint">Not set</span></div>
+    <div class="status-row"><span>Profile endpoint</span><span id="connectorProfileEndpoint">Not set</span></div>
+    <div class="status-row"><span>Callback page</span><span><a class="text-link" href="./auth/callback.html">auth/callback.html</a></span></div>
+  </div>
+  <div class="helper-note top-gap">Use <code>runtime-config.js</code> and the example worker only when you have a supported Arc House auth or profile connector.</div>
+  <div class="sub-actions top-gap">
+    <a class="ghost-btn" href="./connected-mode.html" id="openConnectedDocs">Connected mode docs</a>
+    <button class="ghost-btn" type="button" id="copyRuntimeConfigBtn">Copy runtime config</button>
+  </div>
+</section>
+
         <section class="card glass">
           <div class="card-header">
             <div>
               <h3>Why this version is stronger</h3>
-              <p>V6 is about utility and trust, not just more visuals.</p>
+              <p>V8 is about planning, utility, and connected-mode readiness, not just more visuals.</p>
             </div>
           </div>
           <div class="insight-grid">
@@ -375,8 +445,8 @@
     </section>
 
     <footer class="footer glass">
-      <span>ArcLume V7, premium Arc wallet and Arc House companion with saved profiles, wallet insight depth, and cleaner public-data boundaries.</span>
-      <span>Live Arc Testnet checks, Arcscan linking, auto-updating public Arc House cards, resource sync, and sign-in handoff in one place.</span>
+      <span>ArcLume V8, premium Arc wallet and Arc House companion with saved profiles, wallet insight depth, and cleaner public-data boundaries.</span>
+      <span>Live Arc Testnet checks, auto-updating public Arc House cards, architect planning, resource sync, and connected-mode readiness in one place.</span>
     </footer>
   </main>
 
@@ -412,6 +482,7 @@
         <a class="btn btn-primary" href="https://community.arc.network/home" target="_blank" rel="noreferrer">Open Arc House sign in</a>
         <button class="btn btn-secondary" type="button" id="modalCopyEmail">Copy email</button>
         <button class="btn btn-secondary" type="button" id="modalCopySummary">Copy profile summary</button>
+        <a class="btn btn-secondary" href="./connected-mode.html" id="modalOpenConnectedDocs">Connected mode docs</a>
       </div>
 
       <div class="helper-note top-gap">
@@ -420,6 +491,7 @@
     </div>
   </div>
 
+  <script src="./runtime-config.js"></script>
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>

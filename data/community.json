@@ -2,7 +2,7 @@
   "meta": {
     "generatedAt": "2026-04-04T09:30:00Z",
     "sourceMode": "Auto-updating public feed via GitHub Actions, with local JSON fallback",
-    "notes": "Public Arc House and Arc Docs data only. Private profile data such as points, badges, and personal event participation remains login-gated.",
+    "notes": "Auto-updating public Arc House feed for ArcLume V8. Private Arc House profile data remains login-gated unless a supported authenticated integration is added.",
     "sources": [
       {
         "label": "Arc Docs Connect to Arc",
@@ -32,7 +32,8 @@
         "label": "Architects Tiers & Benefits",
         "url": "https://community.arc.network/home/resources/architects-tiers-and-benefits"
       }
-    ]
+    ],
+    "generatedBy": "ArcLume V8"
   },
   "items": [
     {

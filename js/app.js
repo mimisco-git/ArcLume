@@ -2,7 +2,7 @@
 import { ethers } from 'https://cdn.jsdelivr.net/npm/ethers@6.13.5/+esm';
 
 const CONFIG = {
-  appName: 'ArcLume V7',
+  appName: 'ArcLume V8',
   networkName: 'Arc Testnet',
   chainId: 5042002,
   rpcUrl: 'https://rpc.testnet.arc.network',
@@ -10,8 +10,8 @@ const CONFIG = {
   explorerApi: 'https://testnet.arcscan.app/api',
   communityUrl: 'https://community.arc.network/home',
   sampleAddress: '0x8004A818BFB912233c491871b3d84c89A494BD9e',
-  profileStorageKey: 'arclume_v7_profile',
-  buildTimestamp: '2026-04-04T12:00:00Z',
+  profileStorageKey: 'arclume_v8_profile',
+  buildTimestamp: '2026-04-04T13:30:00Z',
   communityDataUrl: './data/community.json'
 };
 
@@ -56,6 +56,35 @@ const COMMUNITY_FILTERS = [
 ];
 
 const provider = new ethers.JsonRpcProvider(CONFIG.rpcUrl, { name: CONFIG.networkName, chainId: CONFIG.chainId }, { staticNetwork: true });
+const CONNECTED_MODE = window.ARCLUME_CONNECTED_MODE || { enabled: false, authEndpoint: '', profileEndpoint: '', notes: 'Static mode only.' };
+
+const POINT_RULES = [
+  { key: 'planOnboarding', label: 'Finish onboarding', points: 100 },
+  { key: 'planDailyActive', label: 'Daily active', points: 5 },
+  { key: 'planEventRegistration', label: 'Event registration', points: 5 },
+  { key: 'planEventParticipation', label: 'Event participation', points: 100 },
+  { key: 'planReadContent', label: 'Read content', points: 5 },
+  { key: 'planWatchVideo', label: 'Watch a video', points: 5 },
+  { key: 'planPublishPost', label: 'Publish a post', points: 10 },
+  { key: 'planComments', label: 'Comment or reply', points: 5 },
+  { key: 'planAcceptedAnswer', label: 'Accepted answer', points: 30 },
+  { key: 'planAuthor', label: 'Author content', points: 200 },
+  { key: 'planIdVerified', label: 'ID verified', points: 100 },
+  { key: 'planDeveloperChallenge', label: 'Developer challenge winner', points: 100 },
+  { key: 'planHackathonWinner', label: 'Hackathon winner', points: 500 },
+  { key: 'planCourseChampion', label: 'Course champion', points: 200 },
+  { key: 'planEventSpeaker', label: 'Event speaker', points: 500 },
+  { key: 'planMeetingHost', label: 'Meeting or webinar host', points: 300 }
+];
+
+const TIER_THRESHOLDS = [
+  { tier: 0, min: 0, next: 500, roles: 'None yet', focus: 'Onboarding + early activity' },
+  { tier: 1, min: 500, next: 3500, roles: 'Architect badge and topic group', focus: 'Stack event participation and content' },
+  { tier: 2, min: 3500, next: 15000, roles: 'Community Moderator or Technical Speaker application window', focus: 'Higher-value speaking and hosting' },
+  { tier: 3, min: 15000, next: 40000, roles: 'Senior Technical Speaker path', focus: 'Sustain speaking, workshops, and visibility' },
+  { tier: 4, min: 40000, next: 90000, roles: 'Regional Lead (City) coming soon', focus: 'Broader leadership and ecosystem participation' },
+  { tier: 5, min: 90000, next: null, roles: 'Regional Lead (Country) coming soon', focus: 'Top-tier ecosystem leadership' }
+];
 
 const els = Object.fromEntries([...document.querySelectorAll('[id]')].map((node) => [node.id, node]));
 
@@ -260,7 +289,7 @@ function updateJourneyAndIdentity() {
   els.readinessScore.textContent = `${score}%`;
   els.readinessBadgeValue.textContent = badge;
   els.communityModeValue.textContent = walletValid && emailValid ? 'Profile prepared' : walletValid ? 'Wallet mode' : 'Awaiting input';
-  els.communityModeLabel.textContent = walletValid && emailValid ? 'Profile prepared' : walletValid ? 'Wallet mode' : 'Awaiting input';
+  els.communityModeValue.textContent = walletValid && emailValid ? 'Profile prepared' : walletValid ? 'Wallet mode' : 'Awaiting input';
   els.identityWallet.textContent = wallet ? abbreviate(wallet, 8, 6) : 'Not checked yet';
   els.identityEmail.textContent = email || 'Optional';
   els.identityStatus.textContent = walletValid && emailValid ? 'Ready for Arc House handoff' : walletValid ? 'Wallet analyzed only' : 'Ready for wallet or sign-in';
@@ -595,6 +624,86 @@ async function analyzeWallet(wallet, email) {
   }
 }
 
+
+function getTierEstimate(points) {
+  let current = TIER_THRESHOLDS[0];
+  for (const tier of TIER_THRESHOLDS) {
+    if (points >= tier.min) current = tier;
+  }
+  return current;
+}
+
+function calculatePlanner() {
+  let total = 0;
+  const rows = [];
+  for (const rule of POINT_RULES) {
+    const el = els[rule.key];
+    const qty = Math.max(0, Number(el?.value || 0));
+    const pts = qty * rule.points;
+    if (qty > 0) rows.push({ label: rule.label, qty, pts });
+    total += pts;
+  }
+  const tier = getTierEstimate(total);
+  const next = tier.next;
+  const progress = next ? Math.min(100, Math.round(((total - tier.min) / (next - tier.min)) * 100)) : 100;
+  els.plannerTotalPoints.textContent = formatCompact(total, 0);
+  els.plannerTier.textContent = `Tier ${tier.tier}`;
+  els.plannerNextMilestone.textContent = next ? `${formatCompact(Math.max(next - total, 0), 0)} pts to next` : 'Top public tier';
+  els.plannerRoles.textContent = tier.roles;
+  els.plannerProgress.textContent = `${progress}%`;
+  els.plannerFocus.textContent = tier.focus;
+  if (!rows.length) {
+    els.plannerBreakdown.innerHTML = '<div class="empty">Add some planned contribution counts to see an estimated points path.</div>';
+  } else {
+    els.plannerBreakdown.innerHTML = rows.sort((a,b)=>b.pts-a.pts).slice(0,8).map(r => `<div class="breakdown-row"><span>${r.label} × ${r.qty}</span><strong>${formatCompact(r.pts,0)} pts</strong></div>`).join('');
+  }
+}
+
+function resetPlanner() {
+  for (const rule of POINT_RULES) {
+    if (els[rule.key]) els[rule.key].value = ['planOnboarding','planIdVerified'].includes(rule.key) ? 1 : 0;
+  }
+  if (els.planDailyActive) els.planDailyActive.value = 7;
+  if (els.planEventRegistration) els.planEventRegistration.value = 2;
+  if (els.planEventParticipation) els.planEventParticipation.value = 1;
+  if (els.planReadContent) els.planReadContent.value = 5;
+  if (els.planWatchVideo) els.planWatchVideo.value = 2;
+  calculatePlanner();
+}
+
+function copyPlannerSummary() {
+  const lines = ['ArcLume V8 planner summary'];
+  for (const rule of POINT_RULES) {
+    const qty = Number(els[rule.key]?.value || 0);
+    if (qty > 0) lines.push(`${rule.label}: ${qty} × ${rule.points} = ${qty * rule.points}`);
+  }
+  lines.push(`Estimated points: ${els.plannerTotalPoints.textContent}`);
+  lines.push(`Estimated tier: ${els.plannerTier.textContent}`);
+  lines.push(`Likely role window: ${els.plannerRoles.textContent}`);
+  copyText(lines.join('
+'), 'Planner summary copied');
+}
+
+function updateConnectedModeCard() {
+  const endpointAuth = CONNECTED_MODE.authEndpoint || '';
+  const endpointProfile = CONNECTED_MODE.profileEndpoint || '';
+  const enabled = Boolean(CONNECTED_MODE.enabled && endpointAuth && endpointProfile);
+  els.connectorModeTag.textContent = enabled ? 'Connected ready' : 'Static mode';
+  els.connectorStatus.textContent = enabled ? 'Configured' : 'Not configured';
+  els.connectorAuthEndpoint.textContent = endpointAuth || 'Not set';
+  els.connectorProfileEndpoint.textContent = endpointProfile || 'Not set';
+}
+
+function copyRuntimeConfig() {
+  const example = `window.ARCLUME_CONNECTED_MODE = {
+  enabled: true,
+  authEndpoint: 'https://your-worker.example.com/auth/start',
+  profileEndpoint: 'https://your-worker.example.com/profile',
+  notes: 'Use only with a supported Arc House auth flow.'
+};`;
+  copyText(example, 'Runtime config copied');
+}
+
 function openModal() {
   els.signInModal.classList.remove('hidden');
   els.signInModal.setAttribute('aria-hidden', 'false');
@@ -619,7 +728,7 @@ function buildSnapshotText() {
     badge: els.walletBadgeTag.textContent
   };
   return [
-    'ArcLume V7 snapshot',
+    'ArcLume V8 snapshot',
     `Wallet: ${s.wallet}`,
     `Email: ${s.email || 'Not set'}`,
     `Balance: ${s.balance}`,
@@ -651,6 +760,10 @@ function bindEvents() {
   els.modalCopyEmail.addEventListener('click', () => copyText(els.emailInput.value.trim(), 'Email copied'));
   els.modalCopySummary.addEventListener('click', () => copyText(buildSnapshotText(), 'Summary copied'));
   els.refreshCommunityBtn.addEventListener('click', () => loadCommunityData(true));
+  els.copyRuntimeConfigBtn.addEventListener('click', copyRuntimeConfig);
+  els.copyPlannerSummary.addEventListener('click', copyPlannerSummary);
+  els.resetPlanner.addEventListener('click', resetPlanner);
+  POINT_RULES.forEach(rule => els[rule.key]?.addEventListener('input', calculatePlanner));
   els.openSignInModal.addEventListener('click', openModal);
   els.openSignInModalHero.addEventListener('click', openModal);
   els.openSignInFromIdentity.addEventListener('click', openModal);
@@ -684,6 +797,8 @@ function init() {
   renderCommunityFilters();
   renderCommunity();
   loadCommunityData();
+  calculatePlanner();
+  updateConnectedModeCard();
   updateJourneyAndIdentity();
   resetWalletViews();
   setWalletInsightDefaults();
