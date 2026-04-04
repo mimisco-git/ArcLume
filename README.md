@@ -1,41 +1,44 @@
-# ArcLume V6
+# ArcLume V7
 
-ArcLume V6 is a premium Arc wallet and Arc House companion built for GitHub Pages.
+ArcLume V7 is a premium GitHub Pages site for:
+- live Arc Testnet wallet checks
+- Arcscan activity links
+- saved profile mode with wallet + email
+- a cleaner Arc House sign-in handoff
+- an auto-updating public Arc House feed powered by `data/community.json`
 
-## What it includes
+## Network references
+- Arc Testnet RPC: `https://rpc.testnet.arc.network`
+- Chain ID: `5042002`
+- Explorer: `https://testnet.arcscan.app`
+- Gas token: `USDC`
 
-- Live Arc Testnet wallet checks
-- Saved profile mode with wallet + email restore
-- Wallet insight cards, including first seen, streak, diversity, contract depth, and readiness badge
-- Cleaner Arc House sign-in handoff panel
-- Wallet-to-community journey tracker
-- Public Arc House priority board with filters, source labels, and refresh metadata
-- Share link and copy actions
-- Automatic light and dark theme based on system preference
+## What auto-updates
+Arc wallet data is live in the browser.
 
-## Network
+Arc House public content updates through:
+1. `data/community.json`
+2. `.github/workflows/update-community.yml`
+3. `scripts/update_community.py`
 
-- Network: Arc Testnet
-- RPC: https://rpc.testnet.arc.network
-- Chain ID: 5042002
-- Explorer: https://testnet.arcscan.app
-- Gas Token: USDC
+The GitHub Action is scheduled to refresh the public community JSON every 6 hours and on manual dispatch.
 
-## Project structure
+## Important boundary
+Private Arc House profile data such as personal points, badges, and private contribution history still requires Arc House sign-in. The public contributor page explicitly states that users must sign in to see their own points and badges.
 
-- `index.html`
-- `css/styles.css`
-- `js/app.js`
-- `assets/arclume-logo.svg`
-- `assets/arclume-logo-mark.svg`
-- `assets/favicon.svg`
-- `assets/og-preview.svg`
+## GitHub setup
+1. Upload the project to your repository root.
+2. Make sure GitHub Pages is serving from the branch or build mode you already use.
+3. Enable GitHub Actions for the repository.
+4. Allow workflow permissions to read and write contents so the scheduled workflow can commit updated `data/community.json`.
+5. Check the **Update ArcLume community feed** workflow after the first push.
 
-## Notes
+## Files added for V7
+- `data/community.json`
+- `scripts/update_community.py`
+- `.github/workflows/update-community.yml`
+- `.nojekyll`
 
-ArcLume does not claim that email alone can unlock private Arc House profile data. It prepares the profile and hands the user off to the real Arc House sign-in flow for points, badges, and personal contribution history.
-
-## Community snapshot metadata
-
-This package was built with a static public Arc House snapshot timestamp of `2026-04-04T12:00:00Z`.
-Update the community items in `js/app.js` whenever you want to refresh the public board.
+## Manual community refresh
+- In the UI, use **Refresh feed** to reload the latest `data/community.json` available in the deployed site.
+- In GitHub, you can also run the workflow manually from the Actions tab.

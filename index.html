@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ArcLume V6, Arc Wallet + Arc House Companion</title>
-  <meta name="description" content="ArcLume V6 is a premium Arc wallet and Arc House companion with saved profiles, smarter wallet insights, event filters, polished status states, and a cleaner sign-in handoff." />
+  <title>ArcLume V7, Live Arc Wallet + Auto-Updating Arc House Companion</title>
+  <meta name="description" content="ArcLume V7 is a premium Arc wallet and Arc House companion with saved profiles, smarter wallet insights, event filters, polished status states, a cleaner sign-in handoff, and an auto-updating public Arc House feed powered by GitHub Actions." />
   <meta name="theme-color" content="#07110d" />
-  <meta property="og:title" content="ArcLume V6" />
+  <meta property="og:title" content="ArcLume V7" />
   <meta property="og:description" content="Premium Arc wallet and Arc House companion dashboard." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="./assets/og-preview.svg" />
@@ -47,7 +47,7 @@
           <div class="eyebrow"><span class="pulse"></span> Wallet signal, identity prep, community route</div>
           <h2><span class="gradient-text">A clearer path,</span> from Arc wallet to Arc House.</h2>
           <p>
-            ArcLume V6 adds saved profiles, smarter wallet insight cards, stronger empty and error states, richer event priority filters, and a cleaner Arc House sign-in handoff, while keeping private community data behind the login boundary.
+            ArcLume V7 adds saved profiles, smarter wallet insight cards, stronger empty and error states, richer event priority filters, and a cleaner Arc House sign-in handoff, while keeping private community data behind the login boundary.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#lookup">Start profile lookup</a>
@@ -61,7 +61,7 @@
             <p class="value-lg" id="latestBlock">--</p>
             <div class="meta-row"><span>Latest block</span><span id="networkName">Arc Testnet</span></div>
             <div class="meta-row"><span>Gas token</span><span>USDC</span></div>
-            <div class="meta-row"><span>Community data</span><span id="communityFeedMode">Public snapshot</span></div>
+            <div class="meta-row"><span>Community data</span><span id="communityFeedMode">Loading public feed</span></div>
           </div>
 
           <div class="mini-panel">
@@ -86,7 +86,7 @@
                 Use your wallet address for Arc network intelligence and your email address to prepare a cleaner Arc House handoff. Save the profile locally, share a prefilled link, and resume where you left off.
               </p>
             </div>
-            <div class="tag tag-primary">V6 upgrade</div>
+            <div class="tag tag-primary">V7 live feed</div>
           </div>
 
           <form class="dual-form" id="profileForm">
@@ -280,16 +280,20 @@
           <div class="card-header">
             <div>
               <h3>Arc House priority board</h3>
-              <p>Public Arc House pages and Architect docs distilled into actionable cards, filters, source labels, and refresh metadata.</p>
+              <p>Public Arc House pages and Architect docs distilled into actionable cards, filters, source labels, and refresh metadata. This board now reads from <code>data/community.json</code>, which can be auto-refreshed by GitHub Actions.</p>
             </div>
-            <div class="tag tag-primary" id="communityStatusTag">Static public snapshot</div>
+            <div class="inline-actions">
+              <button class="ghost-btn small" id="refreshCommunityBtn" type="button">Refresh feed</button>
+              <div class="tag tag-primary" id="communityStatusTag">Loading public feed</div>
+            </div>
           </div>
 
           <div class="community-meta-bar">
-            <span>Source mode: <strong id="communityModeText">Static public snapshot</strong></span>
-            <span>Bundle built: <strong id="communityBuildTime">--</strong></span>
+            <span>Source mode: <strong id="communityModeText">Loading public feed</strong></span>
+            <span>Data generated: <strong id="communityBuildTime">--</strong></span>
             <span>Session refreshed: <strong id="communityRefreshTime">--</strong></span>
           </div>
+          <div class="helper-note top-gap" id="communitySourceNote">ArcLume loads public Arc House data from the local JSON bundle first, then refreshes it when newer data is available. Private profile data still requires Arc House sign-in.</div>
           <div class="filter-row" id="communityFilters"></div>
           <div id="communityFeed" class="community-grid"></div>
         </section>
@@ -338,6 +342,7 @@
                 <li>Clear error states</li>
                 <li>No fake fallback stats</li>
                 <li>Community source labels and refresh metadata</li>
+                <li>Auto-updating public feed architecture</li>
               </ul>
             </article>
             <article class="insight">
@@ -370,8 +375,8 @@
     </section>
 
     <footer class="footer glass">
-      <span>ArcLume V6, premium Arc wallet and Arc House companion with saved profiles, wallet insight depth, and cleaner public-data boundaries.</span>
-      <span>Live Arc Testnet checks, Arcscan linking, public Arc House resource cards, and sign-in handoff in one place.</span>
+      <span>ArcLume V7, premium Arc wallet and Arc House companion with saved profiles, wallet insight depth, and cleaner public-data boundaries.</span>
+      <span>Live Arc Testnet checks, Arcscan linking, auto-updating public Arc House cards, resource sync, and sign-in handoff in one place.</span>
     </footer>
   </main>
 

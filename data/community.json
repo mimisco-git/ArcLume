@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "generatedAt": "2026-04-04T09:30:00Z",
+    "sourceMode": "Auto-updating public feed via GitHub Actions, with local JSON fallback",
+    "notes": "Public Arc House and Arc Docs data only. Private profile data such as points, badges, and personal event participation remains login-gated.",
+    "sources": [
+      {
+        "label": "Arc Docs Connect to Arc",
+        "url": "https://docs.arc.network/arc/references/connect-to-arc"
+      },
+      {
+        "label": "Arc Docs Gas and Fees",
+        "url": "https://docs.arc.network/arc/references/gas-and-fees"
+      },
+      {
+        "label": "Arc House Home",
+        "url": "https://community.arc.network/"
+      },
+      {
+        "label": "Arc House Contributors",
+        "url": "https://community.arc.network/public/contributors"
+      },
+      {
+        "label": "Contribution Rules",
+        "url": "https://community.arc.network/public/contributors/contribution-rules"
+      },
+      {
+        "label": "Architects Overview",
+        "url": "https://community.arc.network/home/resources/architects-overview"
+      },
+      {
+        "label": "Architects Tiers & Benefits",
+        "url": "https://community.arc.network/home/resources/architects-tiers-and-benefits"
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "home-office-hours-1",
+      "title": "Arc Discord Office Hours",
+      "type": "event",
+      "priority": "high",
+      "source": "Arc House Home",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-07T17:00:00Z",
+      "icon": "\u25ce",
+      "summary": "Recurring Arc House office hours currently listed on the public home page, useful for community questions and ecosystem updates.",
+      "actionLabel": "Open Arc House",
+      "url": "https://community.arc.network/"
+    },
+    {
+      "id": "home-office-hours-2",
+      "title": "Arc Discord Office Hours",
+      "type": "event",
+      "priority": "medium",
+      "source": "Arc House Home",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-14T17:00:00Z",
+      "icon": "\u25cc",
+      "summary": "The public home page also lists a second Arc Discord Office Hours session later in April.",
+      "actionLabel": "Open Arc House",
+      "url": "https://community.arc.network/"
+    },
+    {
+      "id": "vibecard-event",
+      "title": "Building Agentic Commerce on Arc: VibeCard",
+      "type": "event",
+      "priority": "high",
+      "source": "Arc House Home",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-15T17:00:00Z",
+      "icon": "\u2726",
+      "summary": "A builder spotlight event focused on agentic commerce on Arc, currently listed on the public Arc House home page.",
+      "actionLabel": "Open event slate",
+      "url": "https://community.arc.network/public/events"
+    },
+    {
+      "id": "agentic-hackathon",
+      "title": "Agentic Economy on Arc Hackathon",
+      "type": "event",
+      "priority": "high",
+      "source": "Arc House Event Page",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-20T07:00:00Z",
+      "icon": "\u2b21",
+      "summary": "Hybrid hackathon for agentic economic apps on Arc, with Arc and Circle guidance, and a public prize pool listing.",
+      "actionLabel": "Open event page",
+      "url": "https://community.arc.network/home/events/agentic-economy-on-arc-hackathon-xoayqenc6j"
+    },
+    {
+      "id": "builders-fund-tradable",
+      "title": "Tradable joins the Arc Builders Fund",
+      "type": "content",
+      "priority": "medium",
+      "source": "Arc House Home",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-02T00:00:00Z",
+      "icon": "\u25a3",
+      "summary": "The public Arc House content feed highlights Tradable joining the Arc Builders Fund and deploying to Arc Testnet.",
+      "actionLabel": "Open Arc House content",
+      "url": "https://community.arc.network/"
+    },
+    {
+      "id": "tiers-benefits",
+      "title": "Architects: Tiers & Benefits",
+      "type": "tier",
+      "priority": "high",
+      "source": "Architect Docs",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-03-31T00:00:00Z",
+      "icon": "\u25ce",
+      "summary": "Public Architect docs show Tier 0 at registration, Tier 1 at 500 points with opt-in, Tier 2 at 3,500 points, and Tier 3 at 15,000 points.",
+      "actionLabel": "Open tiers guide",
+      "url": "https://community.arc.network/home/resources/architects-tiers-and-benefits"
+    },
+    {
+      "id": "program-overview",
+      "title": "Architects: Program Overview",
+      "type": "tier",
+      "priority": "medium",
+      "source": "Architect Docs",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-03-31T00:00:00Z",
+      "icon": "\u25c7",
+      "summary": "Public overview page explains that Architects is Arc\u2019s ambassador-style community program with roles, benefits, and progression through participation.",
+      "actionLabel": "Open overview",
+      "url": "https://community.arc.network/home/resources/architects-overview"
+    },
+    {
+      "id": "contribution-rules",
+      "title": "Contribution Rules",
+      "type": "points",
+      "priority": "high",
+      "source": "Contribution Rules",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-03-31T00:00:00Z",
+      "icon": "\u2727",
+      "summary": "Public rules list point-earning actions such as event speaking, hosting, onboarding, daily active presence, event registration, and attendance.",
+      "actionLabel": "Open contribution rules",
+      "url": "https://community.arc.network/public/contributors/contribution-rules"
+    },
+    {
+      "id": "contributors-signin",
+      "title": "Contributor board and My Contributions",
+      "type": "signin",
+      "priority": "medium",
+      "source": "Contributors",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public + sign-in",
+      "when": "2026-04-04T00:00:00Z",
+      "icon": "\u2197",
+      "summary": "The public contributor page exposes rankings, while My Contributions remains sign-in-only for personal points and badges.",
+      "actionLabel": "Open contributors",
+      "url": "https://community.arc.network/public/contributors"
+    },
+    {
+      "id": "connect-arc",
+      "title": "Connect to Arc",
+      "type": "build",
+      "priority": "medium",
+      "source": "Arc Docs",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-04T00:00:00Z",
+      "icon": "\u2301",
+      "summary": "Official Arc Docs list Arc Testnet RPC endpoint, chain ID 5042002, Arcscan explorer, and USDC as the gas token.",
+      "actionLabel": "Open network docs",
+      "url": "https://docs.arc.network/arc/references/connect-to-arc"
+    },
+    {
+      "id": "gas-and-fees",
+      "title": "Gas and Fees",
+      "type": "build",
+      "priority": "low",
+      "source": "Arc Docs",
+      "mode": "Auto-updating public feed",
+      "visibility": "Public",
+      "when": "2026-04-04T00:00:00Z",
+      "icon": "$",
+      "summary": "Arc Docs describe USDC as the native gas token and testnet base fees targeting roughly one cent per transaction around a 160 Gwei minimum base fee.",
+      "actionLabel": "Open gas docs",
+      "url": "https://docs.arc.network/arc/references/gas-and-fees"
+    }
+  ],
+  "resources": [
+    {
+      "title": "Arc House home",
+      "icon": "\u2302",
+      "desc": "Public home for events, content, discussions, and the main sign-in entry.",
+      "url": "https://community.arc.network/"
+    },
+    {
+      "title": "Events",
+      "icon": "\u25f4",
+      "desc": "Public Arc House event slate for upcoming and past community activities.",
+      "url": "https://community.arc.network/public/events"
+    },
+    {
+      "title": "Architects overview",
+      "icon": "\u25ce",
+      "desc": "Public overview of the Architects program and its role in the ecosystem.",
+      "url": "https://community.arc.network/home/resources/architects-overview"
+    },
+    {
+      "title": "Architect tiers and benefits",
+      "icon": "\u25cc",
+      "desc": "Public tier ladder, thresholds, and benefits including the 500 point Tier 1 opt-in milestone.",
+      "url": "https://community.arc.network/home/resources/architects-tiers-and-benefits"
+    },
+    {
+      "title": "Contribution rules",
+      "icon": "\u2726",
+      "desc": "Public point rules for events, onboarding, daily activity, and more.",
+      "url": "https://community.arc.network/public/contributors/contribution-rules"
+    },
+    {
+      "title": "Connect to Arc",
+      "icon": "\u2301",
+      "desc": "Official Arc Testnet network setup and explorer reference.",
+      "url": "https://docs.arc.network/arc/references/connect-to-arc"
+    }
+  ]
+}

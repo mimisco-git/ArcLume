@@ -2,7 +2,7 @@
 import { ethers } from 'https://cdn.jsdelivr.net/npm/ethers@6.13.5/+esm';
 
 const CONFIG = {
-  appName: 'ArcLume V6',
+  appName: 'ArcLume V7',
   networkName: 'Arc Testnet',
   chainId: 5042002,
   rpcUrl: 'https://rpc.testnet.arc.network',
@@ -10,95 +10,45 @@ const CONFIG = {
   explorerApi: 'https://testnet.arcscan.app/api',
   communityUrl: 'https://community.arc.network/home',
   sampleAddress: '0x8004A818BFB912233c491871b3d84c89A494BD9e',
-  profileStorageKey: 'arclume_v6_profile',
-  buildTimestamp: '2026-04-04T12:00:00Z'
+  profileStorageKey: 'arclume_v7_profile',
+  buildTimestamp: '2026-04-04T12:00:00Z',
+  communityDataUrl: './data/community.json'
 };
 
-const COMMUNITY_ITEMS = [
-  {
-    id: 'launch-livestream',
-    title: 'Introducing Arc House and Architects Livestream',
-    type: 'event',
-    priority: 'high',
-    source: 'Arc House Home',
-    mode: 'Static public snapshot',
-    visibility: 'Public',
-    when: '2026-04-02T17:00:00Z',
-    icon: '▶',
-    summary: 'Arc House home currently spotlights the Arc House and Architects launch livestream as a primary public event entry.',
-    actionLabel: 'Open Arc House home',
-    url: 'https://community.arc.network/home'
+const FALLBACK_COMMUNITY_DATA = {
+  meta: {
+    generatedAt: CONFIG.buildTimestamp,
+    sourceMode: 'Bundled static snapshot',
+    notes: 'Fallback bundled community data. Private Arc House profile data remains login-gated.',
+    sources: []
   },
-  {
-    id: 'tiers-benefits',
-    title: 'Architects: Tiers & Benefits',
-    type: 'tier',
-    priority: 'high',
-    source: 'Architect Docs',
-    mode: 'Static public snapshot',
-    visibility: 'Public',
-    when: '2026-03-31T00:00:00Z',
-    icon: '◎',
-    summary: 'Tier 0 starts at account registration, and Tier 1 begins at 500 points after opting into the program.',
-    actionLabel: 'Open tiers guide',
-    url: 'https://community.arc.network/public/resources/architects-tiers-and-benefits'
-  },
-  {
-    id: 'contribution-rules',
-    title: 'Contribution Rules',
-    type: 'points',
-    priority: 'high',
-    source: 'Contribution Rules',
-    mode: 'Static public snapshot',
-    visibility: 'Public',
-    when: '2026-03-31T00:00:00Z',
-    icon: '✦',
-    summary: 'Public rules show points for onboarding, daily active presence, event registration, event participation, content, and forum activity.',
-    actionLabel: 'Open contribution rules',
-    url: 'https://community.arc.network/public/contributors/contribution-rules'
-  },
-  {
-    id: 'leaderboard-signin',
-    title: 'Contributor Leaderboard and My Contributions',
-    type: 'signin',
-    priority: 'medium',
-    source: 'Contributors',
-    mode: 'Static public snapshot',
-    visibility: 'Public + sign-in',
-    when: '2026-04-04T00:00:00Z',
-    icon: '◌',
-    summary: 'The public contributor page exposes the leaderboard, while My Contributions requires sign in to reveal your points and badges.',
-    actionLabel: 'Open contributor board',
-    url: 'https://community.arc.network/public/contributors'
-  },
-  {
-    id: 'connect-arc',
-    title: 'Connect to Arc',
-    type: 'build',
-    priority: 'medium',
-    source: 'Arc Docs',
-    mode: 'Static public snapshot',
-    visibility: 'Public',
-    when: '2026-04-04T00:00:00Z',
-    icon: '⬡',
-    summary: 'Use the official network reference when connecting wallets or verifying Arc Testnet settings inside ArcLume.',
-    actionLabel: 'Open network docs',
-    url: 'https://docs.arc.network/arc/references/connect-to-arc'
-  }
-];
-
-const RESOURCE_ITEMS = [
-  { title: 'Arc House home', icon: '⌂', desc: 'Community home for events, content, discussions, and the sign-in entry.', url: 'https://community.arc.network/home' },
-  { title: 'Architects overview', icon: '◎', desc: 'High-level summary of the Architects program and why it exists.', url: 'https://community.arc.network/public/resources/architects-overview' },
-  { title: 'Architect tiers and benefits', icon: '◌', desc: 'Tier ladder, thresholds, benefits, and the 500 point opt-in milestone.', url: 'https://community.arc.network/public/resources/architects-tiers-and-benefits' },
-  { title: 'Contribution rules', icon: '✦', desc: 'Public point values for onboarding, daily active, event registration, attendance, content, and forum actions.', url: 'https://community.arc.network/public/contributors/contribution-rules' }
-];
+  items: [
+    {
+      id: 'fallback-connect-arc',
+      title: 'Connect to Arc',
+      type: 'build',
+      priority: 'medium',
+      source: 'Arc Docs',
+      mode: 'Bundled static snapshot',
+      visibility: 'Public',
+      when: CONFIG.buildTimestamp,
+      icon: '⌁',
+      summary: 'Open the official Arc Docs to verify Arc Testnet network details and wallet setup.',
+      actionLabel: 'Open docs',
+      url: 'https://docs.arc.network/arc/references/connect-to-arc'
+    }
+  ],
+  resources: [
+    { title: 'Arc House home', icon: '⌂', desc: 'Open Arc House directly.', url: 'https://community.arc.network/' }
+  ]
+};
 
 const ACTIVITY_FILTERS = ['all', 'transfer', 'bridge', 'swap', 'liquidity', 'mint', 'contract call', 'deploy'];
 const COMMUNITY_FILTERS = [
   { id: 'all', label: 'All priorities' },
   { id: 'high', label: 'High priority' },
   { id: 'event', label: 'Event' },
+  { id: 'content', label: 'Content' },
   { id: 'tier', label: 'Tier' },
   { id: 'points', label: 'Points' },
   { id: 'signin', label: 'Sign-in' },
@@ -117,7 +67,8 @@ let state = {
   communityFilter: 'all',
   transactions: [],
   explorerHealthy: true,
-  summary: null
+  summary: null,
+  communityData: FALLBACK_COMMUNITY_DATA
 };
 
 const activityIcons = {
@@ -387,6 +338,36 @@ async function fetchTransactionList(address, sort = 'desc', offset = 25) {
   return data.result;
 }
 
+async function loadCommunityData(force = false) {
+  try {
+    const cacheBust = force ? `?t=${Date.now()}` : '';
+    const response = await fetch(`${CONFIG.communityDataUrl}${cacheBust}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Community JSON request failed with status ${response.status}`);
+    const data = await response.json();
+    if (!data || !Array.isArray(data.items) || !Array.isArray(data.resources)) throw new Error('Community JSON shape invalid');
+    state.communityData = data;
+    els.communityStatusTag.textContent = 'Auto-updating public feed';
+    els.communityModeText.textContent = data.meta?.sourceMode || 'Auto-updating public feed';
+    els.communityFeedMode.textContent = 'Auto-updating public feed';
+    els.communitySourceNote.textContent = data.meta?.notes || 'ArcLume loads public Arc House data from data/community.json. Private Arc House profile data still requires sign-in.';
+    els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
+    els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+    renderCommunity();
+    if (force) showToast('Community feed refreshed');
+  } catch (error) {
+    console.error(error);
+    state.communityData = FALLBACK_COMMUNITY_DATA;
+    els.communityStatusTag.textContent = 'Bundled static fallback';
+    els.communityModeText.textContent = FALLBACK_COMMUNITY_DATA.meta.sourceMode;
+    els.communityFeedMode.textContent = 'Bundled static fallback';
+    els.communitySourceNote.textContent = 'Community JSON could not be refreshed in this browser session, so ArcLume is using the bundled public fallback snapshot.';
+    els.communityBuildTime.textContent = formatDateTime(FALLBACK_COMMUNITY_DATA.meta.generatedAt);
+    els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+    renderCommunity();
+    if (force) showToast('Using fallback community snapshot');
+  }
+}
+
 function computeStreak(transactions) {
   if (!transactions.length) return 0;
   const daySet = new Set(transactions.map(tx => new Date(Number(tx.timeStamp) * 1000).toISOString().slice(0, 10)));
@@ -456,32 +437,38 @@ function renderActivities(note = '') {
 }
 
 function renderCommunity() {
-  els.communityBuildTime.textContent = formatDateTime(CONFIG.buildTimestamp);
+  const data = state.communityData || FALLBACK_COMMUNITY_DATA;
+  els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
   els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
-  const items = COMMUNITY_ITEMS.filter(item => state.communityFilter === 'all' || item.priority === state.communityFilter || item.type === state.communityFilter);
-  els.communityFeed.innerHTML = items.map(item => `
-    <article class="community-card">
-      <div class="community-icon">${item.icon}</div>
-      <div class="community-main">
-        <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;">
-          <h4>${item.title}</h4>
-          <span class="tag ${item.priority === 'high' ? 'tag-warning' : 'tag-primary'}">${item.priority} priority</span>
+  const items = (data.items || []).filter(item => state.communityFilter === 'all' || item.priority === state.communityFilter || item.type === state.communityFilter);
+  if (!items.length) {
+    els.communityFeed.innerHTML = '<div class="empty">No community cards matched the selected filter in this session.</div>';
+  } else {
+    els.communityFeed.innerHTML = items.map(item => `
+      <article class="community-card">
+        <div class="community-icon">${item.icon || '•'}</div>
+        <div class="community-main">
+          <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;">
+            <h4>${item.title}</h4>
+            <span class="tag ${item.priority === 'high' ? 'tag-warning' : item.priority === 'medium' ? 'tag-primary' : 'tag-muted'}">${item.priority} priority</span>
+          </div>
+          <p>${item.summary}</p>
+          <div class="community-links">
+            <span class="tag tag-muted">${item.source}</span>
+            <span class="tag tag-muted">${item.mode}</span>
+            <span class="tag tag-muted">${item.visibility}</span>
+            <span class="tag tag-muted">${item.when ? timeUntil(item.when) : 'No schedule'}</span>
+            <a class="text-link" href="${item.url}" target="_blank" rel="noreferrer">${item.actionLabel || 'Open'} ↗</a>
+          </div>
         </div>
-        <p>${item.summary}</p>
-        <div class="community-links">
-          <span class="tag tag-muted">${item.source}</span>
-          <span class="tag tag-muted">${item.mode}</span>
-          <span class="tag tag-muted">${item.visibility}</span>
-          <span class="tag tag-muted">${timeUntil(item.when)}</span>
-          <a class="text-link" href="${item.url}" target="_blank" rel="noreferrer">${item.actionLabel} ↗</a>
-        </div>
-      </div>
-    </article>
-  `).join('');
+      </article>
+    `).join('');
+  }
 
-  els.resourceGrid.innerHTML = RESOURCE_ITEMS.map(item => `
+  const resources = data.resources || [];
+  els.resourceGrid.innerHTML = resources.map(item => `
     <article class="resource-card">
-      <div class="resource-icon">${item.icon}</div>
+      <div class="resource-icon">${item.icon || '•'}</div>
       <div class="resource-main">
         <h4>${item.title}</h4>
         <p>${item.desc}</p>
@@ -632,7 +619,7 @@ function buildSnapshotText() {
     badge: els.walletBadgeTag.textContent
   };
   return [
-    'ArcLume V6 snapshot',
+    'ArcLume V7 snapshot',
     `Wallet: ${s.wallet}`,
     `Email: ${s.email || 'Not set'}`,
     `Balance: ${s.balance}`,
@@ -663,6 +650,7 @@ function bindEvents() {
   els.copyEmailBtn.addEventListener('click', () => copyText(els.emailInput.value.trim(), 'Email copied'));
   els.modalCopyEmail.addEventListener('click', () => copyText(els.emailInput.value.trim(), 'Email copied'));
   els.modalCopySummary.addEventListener('click', () => copyText(buildSnapshotText(), 'Summary copied'));
+  els.refreshCommunityBtn.addEventListener('click', () => loadCommunityData(true));
   els.openSignInModal.addEventListener('click', openModal);
   els.openSignInModalHero.addEventListener('click', openModal);
   els.openSignInFromIdentity.addEventListener('click', openModal);
@@ -695,6 +683,7 @@ function init() {
   renderActivityFilters();
   renderCommunityFilters();
   renderCommunity();
+  loadCommunityData();
   updateJourneyAndIdentity();
   resetWalletViews();
   setWalletInsightDefaults();
