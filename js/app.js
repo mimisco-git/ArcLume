@@ -680,8 +680,7 @@ function copyPlannerSummary() {
   lines.push(`Estimated points: ${els.plannerTotalPoints.textContent}`);
   lines.push(`Estimated tier: ${els.plannerTier.textContent}`);
   lines.push(`Likely role window: ${els.plannerRoles.textContent}`);
-  copyText(lines.join('
-'), 'Planner summary copied');
+  copyText(lines.join('\n'), 'Planner summary copied');
 }
 
 function updateConnectedModeCard() {
@@ -740,8 +739,7 @@ function buildSnapshotText() {
     `Diversity: ${s.diversity}`,
     `Wallet badge: ${s.badge}`,
     `Arcscan: ${CONFIG.explorerUrl}/address/${s.wallet && s.wallet.startsWith('0x') ? s.wallet : ''}`
-  ].join('
-');
+  ].join('\n');
 }
 
 function bindEvents() {
