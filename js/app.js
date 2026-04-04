@@ -8,116 +8,124 @@ const CONFIG = {
   explorerUrl: 'https://testnet.arcscan.app',
   explorerApi: 'https://testnet.arcscan.app/api',
   communityUrl: 'https://community.arc.network/home',
-  sampleAddress: '0x8004A818BFB912233c491871b3d84c89A494BD9e'
+  sampleAddress: '0x8004A818BFB912233c491871b3d84c89A494BD9e',
+  storageKey: 'arclume-v4-profile',
+  paletteKey: 'arclume-v4-palette'
 };
 
 const COMMUNITY_DATA = {
-  events: [
+  feed: [
     {
+      type: 'Event',
       title: 'ETHGlobal Cannes Hackathon',
-      date: '2026-04-03T09:00:00+02:00',
-      badge: 'Hackathon',
       icon: '⬡',
-      description: 'Arc House lists the ETHGlobal Cannes Hackathon on the current event slate.',
+      badge: 'Hackathon',
+      meta: 'Apr 3 to Apr 5, 2026',
+      description: 'Arc House is publicly listing ETHGlobal Cannes Hackathon on the active event slate.',
       url: 'https://community.arc.network/home/events/ethglobal-pragma-l7dy3xfft9'
     },
     {
+      type: 'Event',
       title: 'Arc Discord Office Hours',
-      date: '2026-04-07T17:00:00Z',
-      badge: 'Live Q&A',
       icon: '◎',
-      description: 'Recurring Arc House office hours focused on ecosystem discussion and builder questions.',
-      url: 'https://community.arc.network/home'
-    },
-    {
-      title: 'Arc Discord Office Hours',
-      date: '2026-04-14T17:00:00Z',
       badge: 'Community',
-      icon: '◌',
-      description: 'Second upcoming office hours session currently listed on the Arc House home page.',
+      meta: 'Apr 7, 2026 · 5:00 PM GMT',
+      description: 'Office hours for ecosystem discussion and builder support are currently listed on Arc House.',
       url: 'https://community.arc.network/home'
     },
     {
-      title: 'Building Agentic Commerce on Arc: VibeCard',
-      date: '2026-04-15T17:00:00Z',
-      badge: 'Builder spotlight',
-      icon: '✦',
-      description: 'Upcoming session focused on agentic commerce building on Arc.',
-      url: 'https://community.arc.network/public/events'
-    }
-  ],
-  content: [
+      type: 'Event',
+      title: 'Arc Discord Office Hours',
+      icon: '◌',
+      badge: 'Community',
+      meta: 'Apr 14, 2026 · 5:00 PM GMT',
+      description: 'Second office hours session currently visible on Arc House.',
+      url: 'https://community.arc.network/home'
+    },
     {
-      title: 'Tradable joins the Arc Builders Fund: institutional private credit, onchain',
-      meta: 'Blog · Apr 2, 2026',
-      badge: 'Latest',
+      type: 'Event',
+      title: 'Building Agentic Commerce on Arc: VibeCard',
+      icon: '✦',
+      badge: 'Builder spotlight',
+      meta: 'Apr 15, 2026 · 5:00 PM GMT',
+      description: 'Upcoming session focused on agentic commerce building on Arc.',
+      url: 'https://community.arc.network/home'
+    },
+    {
+      type: 'Event',
+      title: 'Agentic Economy on Arc Hackathon',
+      icon: '⚡',
+      badge: 'Prize pool',
+      meta: 'Apr 20 to Apr 26, 2026 · $10,000 prize pool',
+      description: 'Hybrid Arc hackathon focused on agentic economic apps using USDC nanopayments and Arc settlement.',
+      url: 'https://community.arc.network/home/events/agentic-economy-on-arc-hackathon-xoayqenc6j'
+    },
+    {
+      type: 'Content',
+      title: 'Tradable joins the Arc Builders Fund',
       icon: '▣',
-      description: 'Tradable is highlighted as expanding institutional private credit onchain with Arc Testnet deployment.',
+      badge: 'Latest',
+      meta: 'Blog · Apr 2, 2026',
+      description: 'Featured Arc House post on Tradable expanding institutional-grade private credit onchain with Arc Testnet deployment.',
       url: 'https://community.arc.network/'
     },
     {
+      type: 'Content',
       title: 'Event Replay: Building an Agentic Economy on Arc with RSoft Agentic Bank',
-      meta: 'Video · Apr 2, 2026',
-      badge: 'Replay',
       icon: '▶',
+      badge: 'Replay',
+      meta: 'Video · Apr 2, 2026',
       description: 'Replay centered on identity signals, scoring, treasury management, and atomic settlement for agents.',
       url: 'https://community.arc.network/'
     },
     {
+      type: 'Content',
       title: 'Introducing Arc House and the Architects Program',
-      meta: 'External content · Mar 31, 2026',
-      badge: 'Launch',
       icon: '✧',
-      description: 'Introductory content for the Arc community hub and the new Architects program.',
+      badge: 'Launch',
+      meta: 'External content · Mar 31, 2026',
+      description: 'Launch content for Arc House and the Architects program.',
       url: 'https://community.arc.network/home/events/introducing-arc-house-and-architects-hyp33duk9f?autoRsvp=true'
-    },
-    {
-      title: 'Architects collection and featured resources',
-      meta: 'Resources · current',
-      badge: 'Guides',
-      icon: '◫',
-      description: 'Arc House also highlights the Architect overview, tiers, roles, and contribution opportunity resources.',
-      url: 'https://community.arc.network/public/content?category=resource'
     }
   ],
   resources: [
     {
       title: 'Architects: Program Overview',
       icon: '◎',
-      description: 'Overview of the new Architects program and how recognition works.',
+      description: 'Public overview of Arc’s ambassador-style Architects program.',
       url: 'https://community.arc.network/home/resources/architects-overview'
     },
     {
       title: 'Architects: Tiers & Benefits',
       icon: '◌',
-      description: 'Public breakdown of point tiers and benefits, including Tier 0 and Tier 1 thresholds.',
+      description: 'Public breakdown of tier thresholds from Tier 0 through Tier 5.',
       url: 'https://community.arc.network/home/resources/architects-tiers-and-benefits'
     },
     {
       title: 'Architects: Roles',
       icon: '⬡',
-      description: 'Shows how different Architect roles open up as contributors progress through tiers.',
+      description: 'Public description of Architect roles like Community Moderator and other role paths.',
       url: 'https://community.arc.network/home/resources/architects-roles'
     },
     {
       title: 'Contribution Rules',
       icon: '✦',
-      description: 'Public rules for points and badges, including event speaking, hosting, and registration activities.',
+      description: 'Public rules for points and badges, including event speaking, hosting, and registration actions.',
       url: 'https://community.arc.network/public/contributors/contribution-rules'
     }
   ],
   timeline: [
     {
-      title: 'Create an Arc House account',
+      title: 'Start at Tier 0',
       icon: '①',
       badge: 'Tier 0',
-      description: 'Arc House users begin at Tier 0 status after registering an account.'
+      description: 'Users who register for Arc House start at Tier 0.'
     },
     {
-      title: 'Contribute through events, content, and engagement',
+      title: 'Earn points by showing up',
       icon: '②',
-      badge: 'Earn points',
-      description: 'Public contribution rules describe points for activities like event speaking, hosting, and registration.'
+      badge: 'Points',
+      description: 'Public rules show points for activities like speaking, hosting, and event registration.'
     },
     {
       title: 'Reach 500 points and opt in',
@@ -129,14 +137,36 @@ const COMMUNITY_DATA = {
       title: 'Grow into higher tiers and roles',
       icon: '④',
       badge: 'Roles',
-      description: 'Public role docs describe later eligibility for roles like Community Moderator, Meetup Organizer, Technical Speaker, and Regional Lead.'
+      description: 'At higher tiers, more benefits and role eligibility open up, including moderator and organizer paths.'
+    },
+    {
+      title: 'Aim for high-impact contribution',
+      icon: '⑤',
+      badge: 'Tier 5',
+      description: 'Tier 5 reaches 90,000 points, with high-visibility spotlighting and deeper access opportunities.'
+    }
+  ],
+  spotlight: [
+    {
+      title: 'Architect tiers are now much clearer',
+      description: 'Arc House now publicly spells out the full points ladder, from Tier 0 at registration to Tier 5 at 90,000 points.'
+    },
+    {
+      title: 'Agentic economy is a major theme',
+      description: 'Arc is actively featuring agentic commerce, agentic banking, and an agentic economy hackathon in its public content and events.'
+    },
+    {
+      title: 'Contributors need sign-in for personal stats',
+      description: 'The public contributor page shows the leaderboard, but personal points and badges are behind login.'
     }
   ]
 };
 
 const els = {
   walletInput: document.getElementById('walletInput'),
+  emailInput: document.getElementById('emailInput'),
   analyzeBtn: document.getElementById('analyzeBtn'),
+  profileForm: document.getElementById('profileForm'),
   latestBlock: document.getElementById('latestBlock'),
   networkBlock: document.getElementById('networkBlock'),
   gasPrice: document.getElementById('gasPrice'),
@@ -154,22 +184,33 @@ const els = {
   rpcEndpoint: document.getElementById('rpcEndpoint'),
   useDemoAddress: document.getElementById('useDemoAddress'),
   copyNetworkConfig: document.getElementById('copyNetworkConfig'),
+  saveProfileMode: document.getElementById('saveProfileMode'),
+  copySnapshot: document.getElementById('copySnapshot'),
   identityWallet: document.getElementById('identityWallet'),
   identityEmail: document.getElementById('identityEmail'),
+  identityStatus: document.getElementById('identityStatus'),
+  identityProof: document.getElementById('identityProof'),
   identityPoints: document.getElementById('identityPoints'),
   identityTier: document.getElementById('identityTier'),
   identityBadges: document.getElementById('identityBadges'),
   identityEvents: document.getElementById('identityEvents'),
+  readinessScore: document.getElementById('readinessScore'),
+  communityModeValue: document.getElementById('communityModeValue'),
+  communityModeLabel: document.getElementById('communityModeLabel'),
+  identityNote: document.getElementById('identityNote'),
   communityFeed: document.getElementById('communityFeed'),
   communityTimeline: document.getElementById('communityTimeline'),
-  resourceGrid: document.getElementById('resourceGrid')
+  resourceGrid: document.getElementById('resourceGrid'),
+  spotlightPanel: document.getElementById('spotlightPanel'),
+  paletteToggle: document.getElementById('paletteToggle')
 };
 
-const provider = new ethers.JsonRpcProvider(
-  CONFIG.rpcUrl,
-  { name: CONFIG.networkName, chainId: CONFIG.chainId },
-  { staticNetwork: true }
-);
+const provider = new ethers.JsonRpcProvider(CONFIG.rpcUrl, {
+  name: CONFIG.networkName,
+  chainId: CONFIG.chainId
+}, {
+  staticNetwork: true
+});
 
 const activityIcons = {
   swap: '⇄',
@@ -180,6 +221,15 @@ const activityIcons = {
   mint: '✦',
   deploy: '⬡',
   default: '•'
+};
+
+let currentProfile = {
+  wallet: '',
+  email: '',
+  balance: '--',
+  txCount: '--',
+  score: '--',
+  walletType: '--'
 };
 
 function abbreviate(value, front = 6, back = 4) {
@@ -218,15 +268,6 @@ function relativeTime(input) {
   return `${days}d ago`;
 }
 
-function timeUntil(input) {
-  const diff = new Date(input).getTime() - Date.now();
-  const abs = Math.abs(diff);
-  const days = Math.floor(abs / 86400000);
-  const hours = Math.floor((abs % 86400000) / 3600000);
-  if (diff >= 0) return days > 0 ? `in ${days}d ${hours}h` : `in ${hours}h`;
-  return days > 0 ? `${days}d ago` : `${hours}h ago`;
-}
-
 function classifyTransaction(tx) {
   const method = (tx.functionName || tx.method || '').toLowerCase();
   const input = (tx.input || '').toLowerCase();
@@ -250,10 +291,72 @@ function computeScore({ balance, txCount, recentCount, uniqueTargets, isContract
   return balanceScore + txScore + recentScore + diversityScore + contractPenalty;
 }
 
-function setLoading(isLoading) {
-  els.analyzeBtn.disabled = isLoading;
-  els.analyzeBtn.textContent = isLoading ? 'Loading...' : 'Analyze wallet';
-  els.loadingBar.classList.toggle('active', isLoading);
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+function calculateReadiness(wallet, email) {
+  let score = 0;
+  if (ethers.isAddress(wallet)) score += 60;
+  if (isValidEmail(email)) score += 40;
+  return score;
+}
+
+function communityModeLabel(wallet, email) {
+  const hasWallet = ethers.isAddress(wallet);
+  const hasEmail = isValidEmail(email);
+  if (hasWallet && hasEmail) return 'Wallet + email';
+  if (hasWallet) return 'Wallet only';
+  if (hasEmail) return 'Email only';
+  return 'Awaiting input';
+}
+
+function applyPalette(palette) {
+  const next = palette === 'arc' ? 'arc' : 'emerald';
+  document.body.dataset.palette = next;
+  localStorage.setItem(CONFIG.paletteKey, next);
+  els.paletteToggle.textContent = `Palette: ${next === 'arc' ? 'Arc' : 'Emerald'}`;
+}
+
+function loadSavedProfile() {
+  const saved = localStorage.getItem(CONFIG.storageKey);
+  if (!saved) return;
+  try {
+    const parsed = JSON.parse(saved);
+    if (parsed.wallet) els.walletInput.value = parsed.wallet;
+    if (parsed.email) els.emailInput.value = parsed.email;
+  } catch {}
+}
+
+function saveProfile() {
+  const payload = {
+    wallet: els.walletInput.value.trim(),
+    email: els.emailInput.value.trim()
+  };
+  localStorage.setItem(CONFIG.storageKey, JSON.stringify(payload));
+  els.saveProfileMode.textContent = 'Saved';
+  setTimeout(() => { els.saveProfileMode.textContent = 'Save profile mode'; }, 1400);
+}
+
+function updateIdentity(wallet = '', email = '') {
+  const readiness = calculateReadiness(wallet, email);
+  const mode = communityModeLabel(wallet, email);
+
+  els.identityWallet.textContent = ethers.isAddress(wallet) ? abbreviate(wallet, 8, 6) : 'No valid wallet yet';
+  els.identityEmail.textContent = isValidEmail(email) ? email : 'Optional';
+  els.identityStatus.textContent = isValidEmail(email) ? 'Profile mode active' : 'Awaiting email or sign-in';
+  els.identityProof.textContent = isValidEmail(email) ? 'Email captured locally' : 'Not verified';
+  els.identityPoints.textContent = 'Login required';
+  els.identityTier.textContent = 'Login required';
+  els.identityBadges.textContent = 'Login required';
+  els.identityEvents.textContent = 'Login required';
+  els.readinessScore.textContent = `${readiness}%`;
+  els.communityModeValue.textContent = mode;
+  els.communityModeLabel.textContent = mode;
+
+  els.identityNote.textContent = isValidEmail(email)
+    ? 'Your email is now part of ArcLume profile mode. Arc House private stats still remain login-gated unless Arc later provides authenticated account access.'
+    : 'Add an email to unlock the fuller ArcLume profile mode. Arc House private stats remain login-gated unless Arc provides authenticated account access later.';
 }
 
 async function refreshNetworkPanel() {
@@ -269,7 +372,7 @@ async function refreshNetworkPanel() {
     els.rpcStatusText.textContent = `${network.name || CONFIG.networkName} online`;
     els.gasPrice.textContent = feeData.gasPrice ? `${ethers.formatUnits(feeData.gasPrice, 'gwei')} gwei` : 'Unavailable';
     els.lastRefresh.textContent = new Date().toLocaleTimeString();
-  } catch (error) {
+  } catch {
     els.rpcStatusText.textContent = 'Arc RPC unavailable';
     els.latestBlock.textContent = '--';
     els.networkBlock.textContent = '--';
@@ -284,17 +387,21 @@ async function fetchExplorerTransactions(address) {
     headers: { 'Accept': 'application/json' }
   });
 
-  if (!response.ok) {
-    throw new Error(`Explorer request failed with status ${response.status}`);
-  }
+  if (!response.ok) throw new Error(`Explorer request failed with status ${response.status}`);
 
   const data = await response.json();
   if (!data || !Array.isArray(data.result)) return [];
   return data.result;
 }
 
+function setLoading(isLoading) {
+  els.analyzeBtn.disabled = isLoading;
+  els.analyzeBtn.textContent = isLoading ? 'Loading...' : 'Analyze profile';
+  els.loadingBar.classList.toggle('active', isLoading);
+}
+
 function renderActivities(transactions, note = '') {
-  els.activityNote.classList.toggle('hidden', !note);
+  els.activityNote.style.display = note ? 'block' : 'none';
   els.activityNote.textContent = note;
 
   if (!transactions.length) {
@@ -325,28 +432,7 @@ function renderActivities(transactions, note = '') {
 }
 
 function renderCommunity() {
-  const communityCards = [
-    ...COMMUNITY_DATA.events.map((item) => ({
-      title: item.title,
-      icon: item.icon,
-      badge: item.badge,
-      description: item.description,
-      meta: `${new Date(item.date).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })} • ${timeUntil(item.date)}`,
-      url: item.url,
-      type: 'Event'
-    })),
-    ...COMMUNITY_DATA.content.map((item) => ({
-      title: item.title,
-      icon: item.icon,
-      badge: item.badge,
-      description: item.description,
-      meta: item.meta,
-      url: item.url,
-      type: 'Content'
-    }))
-  ];
-
-  els.communityFeed.innerHTML = communityCards.map((item) => `
+  els.communityFeed.innerHTML = COMMUNITY_DATA.feed.map((item) => `
     <article class="community-card">
       <div class="community-icon">${item.icon}</div>
       <div class="community-main">
@@ -388,35 +474,41 @@ function renderCommunity() {
       </div>
     </article>
   `).join('');
+
+  els.spotlightPanel.innerHTML = COMMUNITY_DATA.spotlight.map((item) => `
+    <article class="spotlight-card">
+      <h4>${item.title}</h4>
+      <p>${item.description}</p>
+    </article>
+  `).join('');
 }
 
-function resetIdentity(address = '') {
-  els.identityWallet.textContent = address ? abbreviate(address, 8, 6) : 'Not checked yet';
-  els.identityEmail.textContent = 'Not publicly exposed';
-  els.identityPoints.textContent = 'Login required';
-  els.identityTier.textContent = 'Login required';
-  els.identityBadges.textContent = 'Login required';
-  els.identityEvents.textContent = 'Login required';
-}
+async function analyzeProfile(wallet, email) {
+  updateIdentity(wallet, email);
 
-async function analyzeWallet(address) {
-  if (!ethers.isAddress(address)) {
-    alert('Please enter a valid EVM wallet address.');
+  if (!ethers.isAddress(wallet)) {
+    els.balanceValue.textContent = '--';
+    els.txCountValue.textContent = '--';
+    els.scoreValue.textContent = '--';
+    els.walletTypeValue.textContent = '--';
+    els.activityNote.style.display = 'block';
+    els.activityNote.textContent = 'Enter a valid wallet address to load live Arc data. Email alone powers profile mode, not onchain metrics.';
+    els.activityList.innerHTML = '<div class="empty">Wallet lookup is waiting for a valid Arc-compatible address.</div>';
+    currentProfile = { wallet, email, balance: '--', txCount: '--', score: '--', walletType: '--' };
     return;
   }
 
   setLoading(true);
-  resetIdentity(address);
-  els.viewWalletTag.href = `${CONFIG.explorerUrl}/address/${address}`;
+  els.viewWalletTag.href = `${CONFIG.explorerUrl}/address/${wallet}`;
   els.viewWalletTag.textContent = 'Open wallet in Arcscan';
   els.activityList.innerHTML = '<div class="empty">Loading recent activity…</div>';
-  els.activityNote.classList.add('hidden');
+  els.activityNote.style.display = 'none';
 
   try {
     const [balanceBn, txCount, code, latestBlock] = await Promise.all([
-      provider.getBalance(address),
-      provider.getTransactionCount(address),
-      provider.getCode(address),
+      provider.getBalance(wallet),
+      provider.getTransactionCount(wallet),
+      provider.getCode(wallet),
       provider.getBlockNumber()
     ]);
 
@@ -431,15 +523,17 @@ async function analyzeWallet(address) {
     els.liveModeTag.textContent = 'Live mode';
 
     let explorerTransactions = [];
-    let explorerNote = 'Arc House profile fields remain private in wallet-only mode. Use Arcscan for wallet activity and Arc House sign-in for personal community details when available.';
+    let explorerNote = isValidEmail(email)
+      ? 'Wallet data is live. Your email is stored locally for ArcLume profile mode, but Arc House private profile fields still remain login-gated.'
+      : 'Wallet data is live. Add an email for the fuller ArcLume profile mode. Arc House private profile fields remain login-gated.';
 
     try {
-      explorerTransactions = await fetchExplorerTransactions(address);
+      explorerTransactions = await fetchExplorerTransactions(wallet);
       if (!explorerTransactions.length) {
-        explorerNote = 'Explorer reached, but no recent transactions were returned for this wallet. Arc House personal fields still remain login-gated.';
+        explorerNote = 'Explorer reached, but no recent transactions were returned for this wallet. Arc House private profile fields remain login-gated.';
       }
-    } catch (error) {
-      explorerNote = 'Recent activity feed could not be loaded from the explorer in this browser session. Live balance and wallet metrics are still real. Arc House personal fields remain login-gated.';
+    } catch {
+      explorerNote = 'Recent activity feed could not be loaded from the explorer in this browser session. Live balance and wallet metrics are still real. Arc House private profile fields remain login-gated.';
       els.liveModeTag.textContent = 'RPC live, explorer limited';
     }
 
@@ -455,15 +549,25 @@ async function analyzeWallet(address) {
     els.scoreValue.textContent = formatCompact(score, 0);
     renderActivities(explorerTransactions, explorerNote);
     els.lastRefresh.textContent = new Date().toLocaleTimeString();
+
+    currentProfile = {
+      wallet,
+      email,
+      balance: `${formatUsdc(balance)} USDC`,
+      txCount: formatCompact(txCount, 0),
+      score: formatCompact(score, 0),
+      walletType: isContract ? 'Contract' : 'EOA'
+    };
   } catch (error) {
     console.error(error);
     els.balanceValue.textContent = '--';
     els.txCountValue.textContent = '--';
     els.scoreValue.textContent = '--';
     els.walletTypeValue.textContent = '--';
-    els.activityNote.classList.remove('hidden');
+    els.activityNote.style.display = 'block';
     els.activityNote.textContent = 'Unable to load wallet data right now. Check the address format, then retry.';
     els.activityList.innerHTML = '<div class="empty">Wallet lookup failed. Try again in a moment.</div>';
+    currentProfile = { wallet, email, balance: '--', txCount: '--', score: '--', walletType: '--' };
   } finally {
     setLoading(false);
   }
@@ -481,31 +585,72 @@ async function copyNetworkConfig() {
   try {
     await navigator.clipboard.writeText(text);
     els.copyNetworkConfig.textContent = 'Copied network config';
-    setTimeout(() => { els.copyNetworkConfig.textContent = 'Copy Arc network config'; }, 1600);
+    setTimeout(() => { els.copyNetworkConfig.textContent = 'Copy Arc network config'; }, 1500);
   } catch {
     alert(text);
   }
 }
 
-els.analyzeBtn.addEventListener('click', () => analyzeWallet(els.walletInput.value.trim()));
-els.walletInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') analyzeWallet(els.walletInput.value.trim());
+async function copySnapshot() {
+  const lines = [
+    'ArcLume V4 Snapshot',
+    `Wallet: ${currentProfile.wallet || 'Not set'}`,
+    `Email: ${currentProfile.email || 'Not set'}`,
+    `Balance: ${currentProfile.balance}`,
+    `Tx Count: ${currentProfile.txCount}`,
+    `Arc Score: ${currentProfile.score}`,
+    `Wallet Type: ${currentProfile.walletType}`,
+    'Arc House private stats: Login required'
+  ].join('\n');
+
+  try {
+    await navigator.clipboard.writeText(lines);
+    els.copySnapshot.textContent = 'Copied snapshot';
+    setTimeout(() => { els.copySnapshot.textContent = 'Copy summary snapshot'; }, 1500);
+  } catch {
+    alert(lines);
+  }
+}
+
+function initPalette() {
+  const saved = localStorage.getItem(CONFIG.paletteKey);
+  applyPalette(saved || 'emerald');
+}
+
+els.paletteToggle.addEventListener('click', () => {
+  applyPalette(document.body.dataset.palette === 'emerald' ? 'arc' : 'emerald');
 });
+
+els.profileForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const wallet = els.walletInput.value.trim();
+  const email = els.emailInput.value.trim();
+  analyzeProfile(wallet, email);
+});
+
+els.walletInput.addEventListener('input', () => updateIdentity(els.walletInput.value.trim(), els.emailInput.value.trim()));
+els.emailInput.addEventListener('input', () => updateIdentity(els.walletInput.value.trim(), els.emailInput.value.trim()));
+
 els.useDemoAddress.addEventListener('click', () => {
   els.walletInput.value = CONFIG.sampleAddress;
-  analyzeWallet(CONFIG.sampleAddress);
+  analyzeProfile(CONFIG.sampleAddress, els.emailInput.value.trim());
 });
+
 els.copyNetworkConfig.addEventListener('click', copyNetworkConfig);
+els.saveProfileMode.addEventListener('click', saveProfile);
+els.copySnapshot.addEventListener('click', copySnapshot);
 
 const queryAddress = new URLSearchParams(window.location.search).get('address');
 if (queryAddress) els.walletInput.value = queryAddress;
 
 els.rpcEndpoint.textContent = CONFIG.rpcUrl;
 renderCommunity();
-resetIdentity();
+initPalette();
+loadSavedProfile();
+updateIdentity(els.walletInput.value.trim(), els.emailInput.value.trim());
 refreshNetworkPanel();
 setInterval(refreshNetworkPanel, 30000);
 
 if (queryAddress && ethers.isAddress(queryAddress)) {
-  analyzeWallet(queryAddress);
+  analyzeProfile(queryAddress, els.emailInput.value.trim());
 }

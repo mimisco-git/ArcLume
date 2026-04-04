@@ -1,25 +1,44 @@
-# ArcLume V3
+# ArcLume V4
 
-ArcLume is a premium GitHub Pages-ready Arc wallet and public community intelligence dashboard.
+ArcLume V4 is a premium GitHub Pages-ready Arc dashboard that combines:
 
-## Included
-- Premium fintech-style responsive design
-- Automatic light and dark mode using the system theme
-- Arc Testnet wallet lookup via RPC
-- Arcscan activity linking
-- Public Arc House layer with:
-  - upcoming events
-  - featured content
-  - Architect program resources
-  - tiers and roles guidance
-  - contribution rules references
-- honest login-gated states for:
-  - linked email
-  - personal points
-  - personal badges
-  - personal event participation
+- live Arc Testnet wallet intelligence
+- email-based Arc House profile mode
+- public Arc House events and content
+- Architect program guidance
+- adaptive light and dark theme
+- premium palette switching between Emerald and Arc
 
-## File structure
+## Features
+
+### Wallet intelligence
+- Live Arc Testnet balance lookup
+- Transaction count via wallet nonce
+- Wallet type detection, EOA or contract
+- Arcscan wallet and transaction linking
+- Arc score based on live usage signals
+
+### Profile mode
+- Wallet address input for Arc data
+- Email input for Arc House profile mode
+- Local save for returning visits
+- Readiness score for wallet plus email completion
+- Honest login-required state for private Arc House fields
+
+### Arc House layer
+- Upcoming Arc House events
+- Featured public Arc content
+- Architect tiers, benefits, roles, and contribution resource links
+- Current community and hackathon spotlight panels
+
+## Network
+- Network: Arc Testnet
+- RPC: https://rpc.testnet.arc.network
+- Chain ID: 5042002
+- Explorer: https://testnet.arcscan.app
+- Gas Token: USDC
+
+## Project structure
 - `index.html`
 - `css/styles.css`
 - `js/app.js`
@@ -27,20 +46,5 @@ ArcLume is a premium GitHub Pages-ready Arc wallet and public community intellig
 - `assets/arclume-logo-mark.svg`
 - `assets/favicon.svg`
 
-## Deploy on GitHub Pages
-1. Unzip the package.
-2. Replace the contents of your GitHub Pages repo with these files.
-3. Commit and push to the `main` branch.
-4. Refresh your Pages URL.
-
-## Arc network settings
-- Network Name: Arc Testnet
-- RPC URL: https://rpc.testnet.arc.network
-- Chain ID: 5042002
-- Currency Symbol: USDC
-- Explorer URL: https://testnet.arcscan.app
-
 ## Notes
-- Wallet balance and nonce are live from Arc Testnet RPC.
-- Recent explorer activity depends on browser access to the Arcscan-compatible API.
-- Arc House private user data is not claimed publicly and stays marked as login required.
+ArcLume does not fake private Arc House data. Personal points, badges, exact participation history, and linked account proof remain shown as login-required until Arc exposes an official authenticated integration.
