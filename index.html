@@ -52,6 +52,7 @@
           <div class="hero-actions">
             <a class="btn btn-primary" href="#lookup">Start profile lookup</a>
             <button class="btn btn-secondary" type="button" id="openSignInModalHero">Arc House access panel</button>
+            <a class="btn btn-secondary" href="./wallet-lab.html">Open Wallet Lab</a>
           </div>
         </div>
 
@@ -448,6 +449,29 @@
       <span>ArcLume V8, premium Arc wallet and Arc House companion with saved profiles, wallet insight depth, and cleaner public-data boundaries.</span>
       <span>Live Arc Testnet checks, auto-updating public Arc House cards, architect planning, resource sync, and connected-mode readiness in one place.</span>
     </footer>
+  
+    <section class="card glass">
+      <div class="card-header">
+        <div>
+          <h3>ArcLume Wallet Lab</h3>
+          <p>
+            A smart but simple Arc contributor build for Circle backend flows on Arc Testnet. Create a wallet set, create wallet A and wallet B, fund wallet A, transfer test USDC, then inspect balances before and after.
+          </p>
+        </div>
+        <div class="tag tag-primary">V9 wallet lab</div>
+      </div>
+
+      <div class="sub-actions">
+        <a class="ghost-btn ghost-btn-strong" href="./wallet-lab.html">Open Wallet Lab</a>
+        <a class="ghost-btn" href="https://console.circle.com/faucet" target="_blank" rel="noreferrer">Open Circle Faucet</a>
+        <a class="ghost-btn" href="https://developers.circle.com/wallets/dev-controlled/create-your-first-wallet" target="_blank" rel="noreferrer">Circle Arc quickstart</a>
+      </div>
+
+      <div class="helper-note">
+        The ArcLume frontend is ready now. To make wallet creation and transfer live, deploy the separate backend scaffold in the <code>api</code> folder and point <code>runtime-config.js</code> at it.
+      </div>
+    </section>
+    
   </main>
 
   <div class="modal hidden" id="signInModal" aria-hidden="true">

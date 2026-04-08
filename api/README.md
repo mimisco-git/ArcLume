@@ -13,3 +13,26 @@ A future supported Arc House integration could expose public auth and profile en
 - `/profile`
 
 Then ArcLume can point `runtime-config.js` at those public endpoints.
+
+
+## Circle backend routes for Wallet Lab
+
+ArcLume Wallet Lab expects a separate backend base URL with routes like:
+
+- `POST /wallet-set`
+- `POST /wallets/create`
+- `GET /wallets/balances?walletAId=...&walletBAddress=...`
+- `POST /transfer`
+
+The frontend is static, so these routes should be deployed on a separate worker or serverless backend.
+
+### Why this backend must be separate
+- Circle API keys must stay secret
+- entity secret generation and request signing must stay off the client
+- wallet creation and transfer should happen only from the backend
+
+### Suggested backend environment variables
+- `CIRCLE_API_KEY`
+- `CIRCLE_ENTITY_SECRET`
+- `CIRCLE_WALLET_SET_ID`
+- `CIRCLE_USDC_TOKEN_ADDRESS`

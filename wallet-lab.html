@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArcLume Wallet Lab, Circle Backend Flow on Arc Testnet</title>
+  <meta name="description" content="Create a wallet set, create wallet A and wallet B on ARC-TESTNET, fund wallet A, transfer test USDC, and inspect balances before and after inside ArcLume Wallet Lab." />
+  <meta name="theme-color" content="#07110d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="stylesheet" href="./css/styles.css" />
+  <style>
+    .wallet-lab-shell { display:grid; gap:22px; }
+    .wallet-lab-hero { padding: 26px; border-radius: 28px; background: radial-gradient(circle at top left, rgba(161,255,76,.12), transparent 24%), linear-gradient(180deg, rgba(11,19,15,.95), rgba(8,14,11,.9)); border: 1px solid rgba(255,255,255,.08); box-shadow: 0 24px 90px rgba(0,0,0,.32); }
+    .wallet-lab-hero h2 { margin: 10px 0 14px; }
+    .wallet-lab-grid { display:grid; gap:22px; grid-template-columns: 1.05fr .95fr; }
+    .wallet-lab-card { padding:22px; border-radius:24px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); box-shadow: inset 0 1px 0 rgba(255,255,255,.03); }
+    .wallet-lab-card h3 { margin:0 0 8px; font-size:1.08rem; }
+    .wallet-lab-card p { margin:0 0 16px; color: var(--muted); line-height:1.7; }
+    .wallet-lab-note { padding:14px 16px; border-radius:18px; font-size:.92rem; line-height:1.6; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); color: var(--muted); }
+    .wallet-lab-note.success { background: rgba(161,255,76,.08); border-color: rgba(161,255,76,.22); color: var(--accent); }
+    .wallet-lab-note.warning { background: rgba(255,185,50,.08); border-color: rgba(255,185,50,.18); color: #f2cf7f; }
+    .wallet-lab-note.info { background: rgba(255,255,255,.04); color: var(--text); }
+    .wallet-lab-actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .wallet-lab-ghost { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding: 0 16px; border-radius:999px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); color: var(--text); font-weight:700; cursor:pointer; }
+    .wallet-lab-primary { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding: 0 18px; border-radius:999px; border:none; background: var(--accent); color:#06100a; font-weight:800; cursor:pointer; }
+    .wallet-lab-metrics { display:grid; gap:14px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .wallet-lab-metric { padding:16px; border-radius:20px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); }
+    .wallet-lab-metric-label { font-size:.76rem; text-transform:uppercase; letter-spacing:.12em; color: var(--muted-2); margin-bottom:8px; }
+    .wallet-lab-metric-value { font-size:1rem; font-weight:800; color: var(--text); line-height:1.5; word-break:break-word; }
+    .wallet-lab-balance-grid { display:grid; gap:14px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .wallet-lab-balance { padding:16px; border-radius:20px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); }
+    .wallet-lab-field { display:grid; gap:8px; }
+    .wallet-lab-field input { height:48px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); color: var(--text); padding: 0 16px; outline:none; }
+    .wallet-lab-list { display:grid; gap:10px; margin:0; padding:0; list-style:none; }
+    .wallet-lab-list li { padding:14px 16px; border-radius:18px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); color: var(--muted); line-height:1.7; }
+    .disabled-link { pointer-events:none; opacity:.5; }
+    @media (max-width: 960px) { .wallet-lab-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .wallet-lab-metrics, .wallet-lab-balance-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <main class="shell">
+    <section class="topbar glass">
+      <div class="brand">
+        <div class="brand-mark" aria-label="ArcLume logo">
+          <img src="./assets/arclume-logo-mark.svg" alt="" />
+        </div>
+        <div class="brand-copy">
+          <h1>ArcLume Wallet Lab</h1>
+          <p>Backend-first Circle wallet creation and Arc Testnet USDC transfer, shaped into a simple Arc contributor flow.</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="pill" href="./index.html">Back to ArcLume</a>
+        <div class="pill">Chain <strong>ARC-TESTNET</strong></div>
+        <div class="pill">Gas <strong>USDC</strong></div>
+      </div>
+    </section>
+
+    <section class="wallet-lab-shell">
+      <section class="wallet-lab-hero">
+        <div class="eyebrow"><span class="pulse"></span> Arc contributor build</div>
+        <h2><span class="gradient-text">Create wallets,</span> fund wallet A, transfer test USDC, and prove it on Arcscan.</h2>
+        <p>
+          This is the smart but simple ArcLume MVP. Version 1 stays small: create the wallet set, create wallet A and wallet B on Arc Testnet, fund wallet A, transfer Arc Testnet USDC, show the transaction hash and Arcscan link, then compare balances before and after.
+        </p>
+      </section>
+
+      <div class="wallet-lab-grid">
+        <section class="wallet-lab-card">
+          <h3>Wallet creation</h3>
+          <p>Create the Circle wallet set first, then create wallet A and wallet B on ARC-TESTNET.</p>
+          <div class="wallet-lab-actions">
+            <button class="wallet-lab-primary" id="createWalletSetBtn" type="button">Create wallet set</button>
+            <button class="wallet-lab-ghost" id="createWalletsBtn" type="button">Create wallet A + wallet B</button>
+          </div>
+
+          <div class="wallet-lab-metrics" style="margin-top:16px;">
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Backend state</div>
+              <div class="wallet-lab-metric-value" id="backendState">Checking runtime config...</div>
+            </div>
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Wallet set ID</div>
+              <div class="wallet-lab-metric-value" id="walletSetId">--</div>
+            </div>
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Wallet A ID</div>
+              <div class="wallet-lab-metric-value" id="walletAId">--</div>
+            </div>
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Wallet A address</div>
+              <div class="wallet-lab-metric-value" id="walletAAddress">--</div>
+            </div>
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Wallet B ID</div>
+              <div class="wallet-lab-metric-value" id="walletBId">--</div>
+            </div>
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Wallet B address</div>
+              <div class="wallet-lab-metric-value" id="walletBAddress">--</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="wallet-lab-card">
+          <h3>Fund wallet A</h3>
+          <p>Use the Circle Faucet after wallet creation. Keep this step manual for clarity and trust.</p>
+          <ul class="wallet-lab-list">
+            <li>Open the Circle Faucet and choose <strong>Arc Testnet</strong>.</li>
+            <li>Fund wallet A with <strong>test USDC</strong> and the native gas requirement for the transfer flow.</li>
+            <li>Paste or copy the wallet A ID or address from this page when the faucet asks for it.</li>
+          </ul>
+          <div class="wallet-lab-actions" style="margin-top:16px;">
+            <button class="wallet-lab-primary" id="copyFaucetWalletBtn" type="button">Copy wallet A for faucet</button>
+            <a class="wallet-lab-ghost" href="https://console.circle.com/faucet" target="_blank" rel="noreferrer">Open Circle Faucet</a>
+          </div>
+        </section>
+
+        <section class="wallet-lab-card">
+          <h3>Balances before and after</h3>
+          <p>Load the balances before transfer, then transfer and compare both wallets after submission.</p>
+          <div class="wallet-lab-actions">
+            <button class="wallet-lab-primary" id="loadBalancesBtn" type="button">Load balances</button>
+          </div>
+          <div class="wallet-lab-balance-grid" style="margin-top:16px;">
+            <div class="wallet-lab-balance">
+              <div class="wallet-lab-metric-label">Wallet A before</div>
+              <div class="wallet-lab-metric-value" id="walletABefore">--</div>
+            </div>
+            <div class="wallet-lab-balance">
+              <div class="wallet-lab-metric-label">Wallet A after</div>
+              <div class="wallet-lab-metric-value" id="walletAAfter">--</div>
+            </div>
+            <div class="wallet-lab-balance">
+              <div class="wallet-lab-metric-label">Wallet B before</div>
+              <div class="wallet-lab-metric-value" id="walletBBefore">--</div>
+            </div>
+            <div class="wallet-lab-balance">
+              <div class="wallet-lab-metric-label">Wallet B after</div>
+              <div class="wallet-lab-metric-value" id="walletBAfter">--</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="wallet-lab-card">
+          <h3>Transfer Arc Testnet USDC</h3>
+          <p>Use the backend flow to move test USDC from wallet A to wallet B, then open Arcscan.</p>
+          <div class="wallet-lab-field">
+            <label for="transferAmount">Transfer amount</label>
+            <input id="transferAmount" type="text" value="1" inputmode="decimal" />
+          </div>
+          <div class="wallet-lab-actions" style="margin-top:16px;">
+            <button class="wallet-lab-primary" id="transferBtn" type="button">Send test USDC</button>
+            <a class="wallet-lab-ghost disabled-link" id="txLink" href="#" target="_blank" rel="noreferrer">Open Arcscan tx</a>
+          </div>
+
+          <div class="wallet-lab-metrics" style="margin-top:16px;">
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Transaction hash</div>
+              <div class="wallet-lab-metric-value" id="txHash">--</div>
+            </div>
+            <div class="wallet-lab-metric">
+              <div class="wallet-lab-metric-label">Transaction state</div>
+              <div class="wallet-lab-metric-value" id="txState">Not started</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="wallet-lab-note info" id="labNote">
+        ArcLume Wallet Lab is now built into the frontend. To make wallet creation and transfer truly live, point the runtime config at your separate Circle backend or worker.
+      </section>
+    </section>
+  </main>
+
+  <script src="./runtime-config.js"></script>
+  <script src="./js/wallet-lab.js"></script>
+</body>
+</html>

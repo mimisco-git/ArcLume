@@ -50,3 +50,20 @@ Private Arc House profile data such as personal points, badges, and private cont
 - connected-mode readiness card
 - `runtime-config.js` for optional future connector configuration
 - `connected-mode.html` and example worker scaffolding for a future supported authenticated flow
+
+
+## V9 additions
+- new `wallet-lab.html` page
+- ArcLume Wallet Lab for Circle backend flows on Arc Testnet
+- Circle backend runtime config block in `runtime-config.js`
+- frontend support for:
+  - create wallet set
+  - create wallet A and wallet B
+  - show wallet IDs and addresses
+  - fetch balances before and after
+  - transfer Arc Testnet USDC
+  - show tx hash and Arcscan link
+- example backend scaffolding in `api/cloudflare-worker.circle.example.js`
+
+## Important launch boundary
+ArcLume can go live on GitHub Pages as a premium frontend, but the real Circle wallet creation and transfer flow still needs a separate backend because API keys, entity secret handling, and Circle requests must never be exposed in a static site.
