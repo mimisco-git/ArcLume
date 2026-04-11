@@ -375,23 +375,23 @@ async function loadCommunityData(force = false) {
     const data = await response.json();
     if (!data || !Array.isArray(data.items) || !Array.isArray(data.resources)) throw new Error('Community JSON shape invalid');
     state.communityData = data;
-    els.communityStatusTag.textContent = 'Auto-updating public feed';
-    els.communityModeText.textContent = data.meta?.sourceMode || 'Auto-updating public feed';
-    els.communityFeedMode.textContent = 'Auto-updating public feed';
+    if(els.communityStatusTag) els.communityStatusTag.textContent = 'Auto-updating public feed';
+    if(els.communityModeText) els.communityModeText.textContent = data.meta?.sourceMode || 'Auto-updating public feed';
+    if(els.communityFeedMode) els.communityFeedMode.textContent = 'Auto-updating public feed';
     els.communitySourceNote.textContent = data.meta?.notes || 'ArcLume loads public Arc House data from data/community.json. Private Arc House profile data still requires sign-in.';
-    els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
-    els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+    if(els.communityBuildTime) els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
+    if(els.communityRefreshTime) els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
     renderCommunity();
     if (force) showToast('Community feed refreshed');
   } catch (error) {
     console.error(error);
     state.communityData = FALLBACK_COMMUNITY_DATA;
-    els.communityStatusTag.textContent = 'Bundled static fallback';
-    els.communityModeText.textContent = FALLBACK_COMMUNITY_DATA.meta.sourceMode;
-    els.communityFeedMode.textContent = 'Bundled static fallback';
+    if(els.communityStatusTag) els.communityStatusTag.textContent = 'Bundled static fallback';
+    if(els.communityModeText) els.communityModeText.textContent = FALLBACK_COMMUNITY_DATA.meta.sourceMode;
+    if(els.communityFeedMode) els.communityFeedMode.textContent = 'Bundled static fallback';
     els.communitySourceNote.textContent = 'Community JSON could not be refreshed in this browser session, so ArcLume is using the bundled public fallback snapshot.';
-    els.communityBuildTime.textContent = formatDateTime(FALLBACK_COMMUNITY_DATA.meta.generatedAt);
-    els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+    if(els.communityBuildTime) els.communityBuildTime.textContent = formatDateTime(FALLBACK_COMMUNITY_DATA.meta.generatedAt);
+    if(els.communityRefreshTime) els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
     renderCommunity();
     if (force) showToast('Using fallback community snapshot');
   }
@@ -467,8 +467,8 @@ function renderActivities(note = '') {
 
 function renderCommunity() {
   const data = state.communityData || FALLBACK_COMMUNITY_DATA;
-  els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
-  els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+  if(els.communityBuildTime) els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
+  if(els.communityRefreshTime) els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
   const items = (data.items || []).filter(item => state.communityFilter === 'all' || item.priority === state.communityFilter || item.type === state.communityFilter);
   if (!items.length) {
     els.communityFeed.innerHTML = '<div class="empty">No community cards matched the selected filter in this session.</div>';
@@ -684,13 +684,15 @@ function copyPlannerSummary() {
 }
 
 function updateConnectedModeCard() {
+  // Section removed from UI - skip safely
+  const setText = (el, val) => { if (el) el.textContent = val; };
   const endpointAuth = CONNECTED_MODE.authEndpoint || '';
   const endpointProfile = CONNECTED_MODE.profileEndpoint || '';
   const enabled = Boolean(CONNECTED_MODE.enabled && endpointAuth && endpointProfile);
-  els.connectorModeTag.textContent = enabled ? 'Connected ready' : 'Static mode';
-  els.connectorStatus.textContent = enabled ? 'Configured' : 'Not configured';
-  els.connectorAuthEndpoint.textContent = endpointAuth || 'Not set';
-  els.connectorProfileEndpoint.textContent = endpointProfile || 'Not set';
+  setText(els.connectorModeTag, enabled ? 'Connected ready' : 'Static mode');
+  setText(els.connectorStatus, enabled ? 'Configured' : 'Not configured');
+  setText(els.connectorAuthEndpoint, endpointAuth || 'Not set');
+  setText(els.connectorProfileEndpoint, endpointProfile || 'Not set');
 }
 
 function copyRuntimeConfig() {
@@ -826,7 +828,7 @@ function bindEvents() {
   els.modalCopyEmail.addEventListener('click', () => copyText(els.emailInput.value.trim(), 'Email copied'));
   els.modalCopySummary.addEventListener('click', () => copyText(buildSnapshotText(), 'Summary copied'));
   els.refreshCommunityBtn.addEventListener('click', () => loadCommunityData(true));
-  els.copyRuntimeConfigBtn.addEventListener('click', copyRuntimeConfig);
+  els.copyRuntimeConfigBtn?.addEventListener('click', copyRuntimeConfig);
   els.copyPlannerSummary.addEventListener('click', copyPlannerSummary);
   els.resetPlanner.addEventListener('click', resetPlanner);
   POINT_RULES.forEach(rule => els[rule.key]?.addEventListener('input', calculatePlanner));
@@ -871,18 +873,19 @@ function bindEvents() {
 }
 
 function init() {
-  renderActivityFilters();
-  renderCommunityFilters();
-  renderCommunity();
-  loadCommunityData();
-  calculatePlanner();
-  updateConnectedModeCard();
-  updateJourneyAndIdentity();
-  resetWalletViews();
-  setWalletInsightDefaults();
-  refreshNetworkPanel();
-  setInterval(refreshNetworkPanel, 30000);
-  bindEvents();
+  try {
+    renderActivityFilters();
+    renderCommunityFilters();
+    renderCommunity();
+    loadCommunityData();
+    calculatePlanner();
+    updateConnectedModeCard();
+    updateJourneyAndIdentity();
+    resetWalletViews();
+    setWalletInsightDefaults();
+    refreshNetworkPanel();
+    setInterval(refreshNetworkPanel, 30000);
+    bindEvents();
 
   const params = new URLSearchParams(window.location.search);
   const queryWallet = params.get('address') || '';
@@ -902,6 +905,9 @@ function init() {
 
   if (restored) showToast('Profile restored');
   if (queryWallet && ethers.isAddress(queryWallet)) analyzeWallet(queryWallet, queryEmail);
+  } catch (err) {
+    console.error('ArcLume init error:', err);
+  }
 }
 
 init();
