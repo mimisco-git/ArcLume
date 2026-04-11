@@ -448,7 +448,7 @@ function renderActivities(note = '') {
   els.activityList.innerHTML = filtered.map(tx => {
     const d = tx.__details;
     const ts = new Date(Number(tx.timeStamp) * 1000).toISOString();
-    const amount = Number(tx.value || 0) > 0 ? `${formatUsdc(Number(ethers.formatUnits(tx.value || '0', 18)))} USDC` : 'Interaction';
+    const amount = Number(tx.value || 0) > 0 ? `${formatUsdc(Number(ethers.formatUnits(tx.value || '0', 6)))} USDC` : 'Interaction';
     const label = tx.functionName && tx.functionName !== '0x' ? tx.functionName : d.label;
     return `
       <article class="activity-item">
@@ -550,7 +550,7 @@ async function analyzeWallet(wallet, email) {
       provider.getBlockNumber()
     ]);
 
-    const balance = Number(ethers.formatUnits(balanceBn, 18));
+    const balance = Number(ethers.formatUnits(balanceBn, 6));
     const isContract = code && code !== '0x';
     els.balanceValue.textContent = `${formatUsdc(balance)} USDC`;
     els.txCountValue.textContent = formatCompact(txCount, 0);
