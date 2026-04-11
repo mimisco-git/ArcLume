@@ -336,7 +336,7 @@ function resetWalletViews() {
   els.activityList.innerHTML = '<div class="empty">No wallet checked yet. Paste an address above to load live data.</div>';
   els.activityNote.classList.add('hidden');
   els.viewWalletTag.href = CONFIG.explorerUrl;
-  els.quickWalletLink && (els.quickWalletLink.href = CONFIG.explorerUrl);
+  els.quickWalletLink && (els.quickWalletLink?.href = CONFIG.explorerUrl);
 }
 
 async function refreshNetworkPanel() {
@@ -540,7 +540,7 @@ async function analyzeWallet(wallet, email) {
   setLoading(true);
   setBanner('info', 'Running live Arc wallet analysis. Explorer-derived insights may be limited if browser access to Arcscan is unavailable.');
   els.viewWalletTag.href = `${CONFIG.explorerUrl}/address/${wallet}`;
-  if (els.quickWalletLink) els.quickWalletLink.href = `${CONFIG.explorerUrl}/address/${wallet}`;
+  if (els.quickWalletLink) els.quickWalletLink?.href = `${CONFIG.explorerUrl}/address/${wallet}`;
 
   try {
     const [balanceBn, txCount, code, latestBlock] = await Promise.all([
