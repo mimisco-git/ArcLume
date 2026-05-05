@@ -205,7 +205,6 @@ async function transferUsdc() {
     const before = await requestJson(`/wallets/balances?${new URLSearchParams({
       walletAId: labState.walletAId,
       walletBAddress: labState.walletBAddress,
-      walletBId: labState.walletBId,
       blockchain: walletLabConfig.blockchain,
       tokenAddress: walletLabConfig.tokenAddress,
     }).toString()}`, { method: 'GET' });
@@ -230,7 +229,6 @@ async function transferUsdc() {
     const after = await requestJson(`/wallets/balances?${new URLSearchParams({
       walletAId: labState.walletAId,
       walletBAddress: labState.walletBAddress,
-      walletBId: labState.walletBId,
       blockchain: walletLabConfig.blockchain,
       tokenAddress: walletLabConfig.tokenAddress,
     }).toString()}`, { method: 'GET' });
@@ -251,7 +249,7 @@ function bindEvents() {
   labEls.createWalletsBtn?.addEventListener('click', createWallets);
   labEls.loadBalancesBtn?.addEventListener('click', loadBalances);
   labEls.transferBtn?.addEventListener('click', transferUsdc);
-  labEls.copyFaucetWalletBtn?.addEventListener('click', () => copyText(labState.walletAAddress || labState.walletAId, 'Wallet A address copied. Paste this into the Circle Faucet.'));
+  labEls.copyFaucetWalletBtn?.addEventListener('click', () => copyText(labState.walletAId || labState.walletAAddress, 'Wallet A copied for Circle faucet use.'));
 }
 
 loadLabState();

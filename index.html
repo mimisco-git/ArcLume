@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ArcLume | Arc Wallet Intelligence + Wallet Lab</title>
-  <meta name="description" content="ArcLume is a premium Arc wallet intelligence dashboard with live on-chain data, Circle Wallet Lab, Arc House companion tools, and architect planning features." />
+  <title>ArcLume | Arc Wallet Intelligence + Circle Wallet Lab</title>
+  <meta name="description" content="ArcLume - Arc wallet intelligence dashboard. USDC, EURC, USYC balances, CCTP tracker, AI agent checker, post-quantum badge, wallet comparison, and Circle Wallet Lab." />
   <meta name="theme-color" content="#07110d" />
   <meta property="og:title" content="ArcLume | Arc Wallet Intelligence" />
   <meta property="og:description" content="Premium Arc wallet and Arc House companion dashboard." />
@@ -33,23 +33,24 @@
         </div>
         <div class="brand-copy">
           <h1>ArcLume</h1>
-          <p>Arc wallet intelligence and Circle Wallet Lab on Arc Testnet.</p>
+          <p>Wallet intelligence, Arc House handoff, saved profile mode, event priorities, and a sharper green-black premium system.</p>
         </div>
       </div>
 
       <div class="top-actions">
         <div class="pill"><span class="dot"></span><span id="rpcStatusText">Arc network checking</span></div>
         <div class="pill">Chain ID <strong>5042002</strong></div>
+        <div class="pill">Theme <strong>Auto system</strong></div>
       </div>
     </section>
 
     <section class="hero glass">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow"><span class="pulse"></span> Live on Arc Testnet</div>
-          <h2><span class="gradient-text">Arc wallet intelligence,</span> built for builders.</h2>
+          <div class="eyebrow"><span class="pulse"></span> Wallet signal, architect planning, connected-ready route</div>
+          <h2><span class="gradient-text">A clearer path,</span> from Arc wallet to Arc House.</h2>
           <p>
-            Check any Arc wallet, plan your Architect points, explore the Arc House community board, and run real USDC transfers using the Circle Wallet Lab.
+            ArcLume V8 adds saved profiles, smarter wallet insight cards, stronger empty and error states, richer event priority filters, and a cleaner Arc House sign-in handoff, while keeping private community data behind the login boundary.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#lookup">Start profile lookup</a>
@@ -68,10 +69,10 @@
           </div>
 
           <div class="mini-panel">
-            <div class="label">Gas token</div>
-            <p style="font-size:1.5rem;font-weight:800;margin:6px 0 4px;color:var(--primary)">USDC</p>
-            <div class="meta-row"><span>Network</span><span>Arc Testnet</span></div>
-            <div class="meta-row"><span>Chain ID</span><span>5042002</span></div>
+            <div class="label">Data boundary</div>
+            <p>
+              ArcLume can show real Arc onchain data and public Arc House resources. Personal Arc House points, badges, and participation history still require Arc House sign-in.
+            </p>
           </div>
         </div>
       </div>
@@ -92,20 +93,12 @@
             <div class="tag tag-primary">Live data</div>
           </div>
 
-          <!-- Wallet Connect -->
           <button type="button" class="wallet-connect-btn" id="walletConnectBtn">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M21 7H3C2.44772 7 2 7.44772 2 8V19C2 19.5523 2.44772 20 3 20H21C21.5523 20 22 19.5523 22 19V8C22 7.44772 21.5523 7 21 7Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M16 7V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="16.5" cy="13.5" r="1.5" fill="currentColor"/>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 7H3C2.45 7 2 7.45 2 8V19C2 19.55 2.45 20 3 20H21C21.55 20 22 19.55 22 19V8C22 7.45 21.55 7 21 7Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 7V5C16 4.45 15.55 4 15 4H9C8.45 4 8 4.45 8 5V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16.5" cy="13.5" r="1.5" fill="currentColor"/></svg>
             <span id="walletConnectLabel">Connect wallet to auto-fill</span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;opacity:0.5">
-              <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;opacity:0.5"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
           <div class="connect-divider">or enter manually</div>
-
           <div class="dual-form" id="profileForm">
             <label class="field-wrap">
               <span>⌁</span>
@@ -115,7 +108,7 @@
               <span>@</span>
               <input id="emailInput" type="email" placeholder="Arc House email, you@example.com" autocomplete="email" />
             </label>
-            <button class="btn btn-primary" id="analyzeBtn" type="button">Analyze profile</button>
+            <button class="btn btn-primary" id="analyzeBtn" type="button" id="analyzeBtn">Analyze profile</button>
           </div>
 
           <div class="sub-actions">
@@ -127,7 +120,9 @@
             <button class="ghost-btn" id="copySnapshot" type="button">Copy summary snapshot</button>
           </div>
 
-
+          <div class="helper-note">
+            Email is saved locally in your browser when you choose save profile mode. ArcLume does not claim that email alone can reveal private Arc House stats.
+          </div>
 
           <div class="loading-bar" id="loadingBar"><span></span></div>
         </section>
@@ -148,6 +143,16 @@
               <small>Native Arc gas balance in USDC units.</small>
             </article>
             <article class="metric">
+              <div class="metric-label">EURC balance</div>
+              <strong id="eurcBalanceValue">--</strong>
+              <small>Euro stablecoin · Circle issued · 6 decimals</small>
+            </article>
+            <article class="metric">
+              <div class="metric-label">USYC balance</div>
+              <strong id="usycBalanceValue">--</strong>
+              <small>Yield-bearing · tokenized money market</small>
+            </article>
+            <article class="metric">
               <div class="metric-label">Transaction count</div>
               <strong id="txCountValue">--</strong>
               <small>Loaded from wallet nonce on Arc Testnet.</small>
@@ -165,11 +170,158 @@
           </div>
         </section>
 
+        <!-- CCTP Transfer Tracker -->
+        <section class="card glass" id="cctpTrackerSection">
+          <div class="card-header">
+            <div>
+              <h3>CCTP transfer tracker</h3>
+              <p>Recent cross-chain USDC movements for this wallet. Powered by Arc testnet explorer.</p>
+            </div>
+            <div class="tag tag-primary">Live</div>
+          </div>
+          <div id="cctpFeed" class="activity-list">
+            <div class="status-row"><span>Enter a wallet address and click Analyze to load CCTP transfers.</span></div>
+          </div>
+          <div class="sub-actions top-gap">
+            <a class="ghost-btn" href="https://testnet.arcscan.app" target="_blank" rel="noreferrer">Open Arcscan ↗</a>
+            <button class="ghost-btn" type="button" id="refreshCctpBtn">Refresh transfers</button>
+          </div>
+        </section>
+
+        <!-- Wallet comparison tool -->
+        <section class="card glass" id="walletCompareSection">
+          <div class="card-header">
+            <div>
+              <h3>Wallet comparison</h3>
+              <p>Compare two Arc wallets side by side. Useful before sending payments via Stablelane.</p>
+            </div>
+            <div class="tag">Compare</div>
+          </div>
+          <div class="dual-form" style="margin-bottom:14px;">
+            <div class="input-wrapper">
+              <span class="input-icon">A</span>
+              <input type="text" id="compareWalletA" placeholder="Wallet A address, 0x..." />
+            </div>
+            <div class="input-wrapper">
+              <span class="input-icon">B</span>
+              <input type="text" id="compareWalletB" placeholder="Wallet B address, 0x..." />
+            </div>
+            <button class="btn btn-primary" type="button" id="compareBtn">Compare</button>
+          </div>
+          <div id="compareResult" class="compare-grid" style="display:none;">
+            <div class="compare-col">
+              <div class="compare-label">Wallet A</div>
+              <div id="compareAAddr" class="compare-addr">--</div>
+              <div class="compare-stats">
+                <div class="compare-row"><span>USDC</span><strong id="compareAUsdc">--</strong></div>
+                <div class="compare-row"><span>EURC</span><strong id="compareAEurc">--</strong></div>
+                <div class="compare-row"><span>Tx count</span><strong id="compareATx">--</strong></div>
+                <div class="compare-row"><span>Wallet type</span><strong id="compareAType">--</strong></div>
+                <div class="compare-row"><span>Arc score</span><strong id="compareAScore">--</strong></div>
+              </div>
+            </div>
+            <div class="compare-divider">VS</div>
+            <div class="compare-col">
+              <div class="compare-label">Wallet B</div>
+              <div id="compareBAddr" class="compare-addr">--</div>
+              <div class="compare-stats">
+                <div class="compare-row"><span>USDC</span><strong id="compareBUsdc">--</strong></div>
+                <div class="compare-row"><span>EURC</span><strong id="compareBEurc">--</strong></div>
+                <div class="compare-row"><span>Tx count</span><strong id="compareBTx">--</strong></div>
+                <div class="compare-row"><span>Wallet type</span><strong id="compareBType">--</strong></div>
+                <div class="compare-row"><span>Arc score</span><strong id="compareBScore">--</strong></div>
+              </div>
+            </div>
+          </div>
+          <p id="compareStatus" class="helper-note top-gap" style="display:none;"></p>
+        </section>
+
+        <!-- x402 simulator -->
+        <section class="card glass" id="x402Section">
+          <div class="card-header">
+            <div>
+              <h3>x402 payment simulator</h3>
+              <p>Test HTTP-native micropayments on Arc. Generate the payment header, simulate the flow, and verify settlement.</p>
+            </div>
+            <div class="tag tag-accent">x402</div>
+          </div>
+          <div style="display:grid;gap:12px;margin-bottom:14px;">
+            <div class="input-wrapper">
+              <span class="input-icon">URL</span>
+              <input type="text" id="x402Url" placeholder="API endpoint e.g. https://api.example.com/data" />
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="input-wrapper">
+                <span class="input-icon">$</span>
+                <input type="number" id="x402Amount" placeholder="Amount e.g. 0.01" step="0.001" min="0.001" value="0.01" />
+              </div>
+              <div class="input-wrapper">
+                <span class="input-icon">TO</span>
+                <input type="text" id="x402Recipient" placeholder="Recipient wallet 0x..." />
+              </div>
+            </div>
+          </div>
+          <div class="sub-actions">
+            <button class="btn btn-primary" type="button" id="x402GenerateBtn">Generate payment header</button>
+            <button class="ghost-btn" type="button" id="x402CopyBtn" style="display:none;">Copy header</button>
+          </div>
+          <div id="x402Output" style="display:none;margin-top:14px;" class="glass-subtle">
+            <div class="meta-row"><span>Payment header</span></div>
+            <pre id="x402Header" style="font-size:11px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin-top:8px;color:var(--primary);"></pre>
+            <div class="meta-row top-gap"><span>Network</span><span>Arc Testnet (Chain ID 5042002)</span></div>
+            <div class="meta-row"><span>Token</span><span>USDC · 0x3600000000000000000000000000000000000000</span></div>
+            <div class="meta-row"><span>Protocol</span><span>EIP-3009 transferWithAuthorization</span></div>
+          </div>
+        </section>
+
+        <!-- Arc live feed -->
+        <section class="card glass" id="arcFeedSection">
+          <div class="card-header">
+            <div>
+              <h3>Arc testnet live feed</h3>
+              <p>Latest transactions from Arc testnet. Refreshes every 30 seconds.</p>
+            </div>
+            <div class="tag tag-success" id="feedStatusTag">Loading...</div>
+          </div>
+          <div id="arcLiveFeed" class="activity-list">
+            <div class="status-row"><span>Loading live feed...</span></div>
+          </div>
+          <div class="sub-actions top-gap">
+            <a class="ghost-btn" href="https://testnet.arcscan.app" target="_blank" rel="noreferrer">Open Arcscan ↗</a>
+            <button class="ghost-btn" type="button" id="refreshFeedBtn">Refresh now</button>
+          </div>
+        </section>
+
+        <!-- AI Agent checker (ERC-8004) -->
+        <section class="card glass" id="agentCheckerSection">
+          <div class="card-header">
+            <div>
+              <h3>AI agent identity checker</h3>
+              <p>Look up any address in Arc's ERC-8004 onchain agent registry. Check if a wallet has registered AI agent identity and reputation.</p>
+            </div>
+            <div class="tag tag-accent">ERC-8004</div>
+          </div>
+          <div class="dual-form" style="margin-bottom:14px;">
+            <div class="input-wrapper" style="grid-column:span 2;">
+              <span class="input-icon">0x</span>
+              <input type="text" id="agentAddress" placeholder="Wallet or agent address to check..." />
+            </div>
+            <button class="btn btn-primary" type="button" id="checkAgentBtn">Check agent registry</button>
+          </div>
+          <div id="agentResult" style="display:none;" class="glass-subtle">
+            <div class="meta-row"><span>Identity registry</span><strong id="agentIdentityStatus">--</strong></div>
+            <div class="meta-row"><span>Reputation events</span><strong id="agentReputationCount">--</strong></div>
+            <div class="meta-row"><span>Validation status</span><strong id="agentValidationStatus">--</strong></div>
+            <div class="meta-row"><span>IdentityRegistry contract</span><span><a href="https://testnet.arcscan.app/address/0x8004A818BFB912233c491871b3d84c89A494BD9e" target="_blank" rel="noreferrer" class="text-link">0x8004A818...BD9e ↗</a></span></div>
+          </div>
+          <div class="helper-note top-gap">ERC-8004 is Arc's standard for onchain AI agent identity and reputation. <a href="https://docs.arc.network/arc/tutorials/register-your-first-ai-agent" target="_blank" rel="noreferrer" class="text-link">Docs ↗</a></div>
+        </section>
+
         <section class="card glass">
           <div class="card-header">
             <div>
-              <h3>Smarter wallet insights</h3>
-              <p>Clearer insight cards to understand how warm the wallet is and how much signal it carries for the next Arc House step.</p>
+              <h3>Smarter wallet insights</h3
+              <p>Live wallet intelligence, on-chain signals, and Arc ecosystem readiness badges.</p>
             </div>
             <div class="tag tag-accent" id="walletBadgeTag">Fresh wallet</div>
           </div>
@@ -208,7 +360,57 @@
           </div>
         </section>
 
-        <section class="card glass">
+        <section class="split-section">
+          <section class="card glass">
+            <div class="card-header">
+              <div>
+                <h3>Profile readiness and Arc House bridge</h3>
+                <p>Email makes ArcLume feel more personal, but Arc House still controls private account data. This section prepares the handoff and keeps profile fields honest.</p>
+              </div>
+              <div class="tag tag-warning">Trust first</div>
+            </div>
+
+            <div class="identity-list">
+              <div class="identity-row"><span>Wallet address</span><span id="identityWallet">Not checked yet</span></div>
+              <div class="identity-row"><span>Profile email</span><span id="identityEmail">Optional</span></div>
+              <div class="identity-row"><span>Arc House status</span><span id="identityStatus">Ready for wallet or sign-in</span></div>
+              <div class="identity-row"><span>Linked account proof</span><span id="identityProof">Not verified</span></div>
+              <div class="identity-row"><span>Points</span><span id="identityPoints">Login required</span></div>
+              <div class="identity-row"><span>Architect tier</span><span id="identityTier">Login required</span></div>
+              <div class="identity-row"><span>Badges</span><span id="identityBadges">Login required</span></div>
+              <div class="identity-row"><span>Events participated</span><span id="identityEvents">Login required</span></div>
+            </div>
+
+            <div class="mini-metrics top-gap">
+              <article class="mini-stat">
+                <span class="mini-stat-label">Readiness score</span>
+                <strong id="readinessScore">0%</strong>
+                <small>Wallet + email + saved profile completeness.</small>
+              </article>
+              <article class="mini-stat">
+                <span class="mini-stat-label">Community mode</span>
+                <strong id="communityModeValue">Awaiting input</strong>
+                <small>Profile preparation state for Arc House context.</small>
+              </article>
+            </div>
+
+            <div class="note top-gap" id="identityNote">
+              Add both wallet and email to unlock the fuller ArcLume profile mode. Personal Arc House stats still remain sign-in-only unless Arc provides an authenticated integration later.
+            </div>
+
+            <div class="action-panel top-gap">
+              <div class="action-panel-copy">
+                <h4>Most useful next action</h4>
+                <p id="nextActionText">Start with a wallet lookup, then add your email if you want ArcLume to prepare your Arc House handoff.</p>
+              </div>
+              <div class="action-panel-links">
+                <button class="btn btn-primary" type="button" id="openSignInFromIdentity">Continue to Arc House sign in</button>
+                <button class="btn btn-secondary" type="button" id="copyEmailBtn">Copy email for sign-in</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="card glass">
             <div class="card-header">
               <div>
                 <h3>Wallet-to-community journey</h3>
@@ -274,141 +476,7 @@
           <div id="resourceGrid" class="resource-grid"></div>
         </section>
 
-</div>
-
-      <aside class="stack" style="display:contents;">
-        <section class="card glass">
-          <div class="card-header">
-            <div>
-              <h3>Arc network panel</h3>
-              <p>Key network settings and live status for the Arc side of the dashboard.</p>
-            </div>
-          </div>
-
-          <div class="status-list">
-            <div class="status-row"><span>RPC endpoint</span><span id="rpcEndpoint">https://rpc.testnet.arc.network</span></div>
-            <div class="status-row"><span>Explorer</span><span>testnet.arcscan.app</span></div>
-            <div class="status-row"><span>Latest block</span><span id="networkBlock">--</span></div>
-            <div class="status-row"><span>Suggested gas</span><span id="gasPrice">--</span></div>
-            <div class="status-row"><span>Last refresh</span><span id="lastRefresh">--</span></div>
-          </div>
-        </section>
-
-
 <section class="card glass">
-  <div class="card-header">
-    <div>
-      <h3>Quick links</h3>
-      <p>Jump to the most useful Arc resources and tools.</p>
-    </div>
-    <div class="tag tag-accent">Arc ecosystem</div>
-  </div>
-  <div class="sub-actions top-gap">
-    <a class="ghost-btn" href="https://testnet.arcscan.app" target="_blank" rel="noreferrer">Arc Explorer</a>
-    <a class="ghost-btn" href="https://faucet.circle.com" target="_blank" rel="noreferrer">Circle Faucet</a>
-    <a class="ghost-btn" href="https://community.arc.network/home" target="_blank" rel="noreferrer">Arc House</a>
-    <a class="ghost-btn" href="./wallet-lab.html">Wallet Lab</a>
-  </div>
-</section>
-
-        <section class="card glass">
-          <div class="card-header">
-            <div>
-              <h3>What ArcLume gives you</h3>
-              <p>Everything you need to understand your Arc wallet and plan your path through the Arc ecosystem.</p>
-            </div>
-          </div>
-          <div class="insight-grid">
-            <article class="insight">
-              <h4>Wallet intelligence</h4>
-              <ul>
-                <li>Live Arc balance and tx count</li>
-                <li>Activity streak and diversity score</li>
-                <li>First seen date and warmth badge</li>
-              </ul>
-            </article>
-            <article class="insight">
-              <h4>Circle Wallet Lab</h4>
-              <ul>
-                <li>Create developer-controlled wallets</li>
-                <li>Transfer test USDC on Arc Testnet</li>
-                <li>Verify on Arcscan</li>
-              </ul>
-            </article>
-            <article class="insight">
-              <h4>Arc House tools</h4>
-              <ul>
-                <li>Priority board with filters</li>
-                <li>Architect points planner</li>
-                <li>Public resource library</li>
-              </ul>
-            </article>
-            <article class="insight">
-              <h4>Profile features</h4>
-              <ul>
-                <li>Save and resume profiles</li>
-                <li>Share prefilled wallet links</li>
-                <li>Journey progress tracker</li>
-              </ul>
-            </article>
-          </div>
-        </section>
-      </aside>
-    </section>
-
-    <!-- Full width: Profile readiness + Journey -->
-    <section class="full-width-section" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;">
-      <section class="card glass">
-            <div class="card-header">
-              <div>
-                <h3>Profile readiness and Arc House bridge</h3>
-                <p>Email makes ArcLume feel more personal, but Arc House still controls private account data. This section prepares the handoff and keeps profile fields honest.</p>
-              </div>
-              <div class="tag tag-warning">Trust first</div>
-            </div>
-
-            <div class="identity-list">
-              <div class="identity-row"><span>Wallet address</span><span id="identityWallet">Not checked yet</span></div>
-              <div class="identity-row"><span>Profile email</span><span id="identityEmail">Optional</span></div>
-              <div class="identity-row"><span>Arc House status</span><span id="identityStatus">Ready for wallet or sign-in</span></div>
-              <div class="identity-row"><span>Linked account proof</span><span id="identityProof">Not verified</span></div>
-              <div class="identity-row"><span>Points</span><span id="identityPoints">Login required</span></div>
-              <div class="identity-row"><span>Architect tier</span><span id="identityTier">Login required</span></div>
-              <div class="identity-row"><span>Badges</span><span id="identityBadges">Login required</span></div>
-              <div class="identity-row"><span>Events participated</span><span id="identityEvents">Login required</span></div>
-            </div>
-
-            <div class="mini-metrics top-gap">
-              <article class="mini-stat">
-                <span class="mini-stat-label">Readiness score</span>
-                <strong id="readinessScore">0%</strong>
-                <small>Wallet + email + saved profile completeness.</small>
-              </article>
-              <article class="mini-stat">
-                <span class="mini-stat-label">Community mode</span>
-                <strong id="communityModeValue">Awaiting input</strong>
-                <small>Profile preparation state for Arc House context.</small>
-              </article>
-            </div>
-
-            <div class="note top-gap" id="identityNote">
-              Add both wallet and email to unlock the fuller ArcLume profile mode. Personal Arc House stats still remain sign-in-only unless Arc provides an authenticated integration later.
-            </div>
-
-            <div class="action-panel top-gap">
-              <div class="action-panel-copy">
-                <h4>Most useful next action</h4>
-                <p id="nextActionText">Start with a wallet lookup, then add your email if you want ArcLume to prepare your Arc House handoff.</p>
-              </div>
-              <div class="action-panel-links">
-                <button class="btn btn-primary" type="button" id="openSignInFromIdentity">Continue to Arc House sign in</button>
-                <button class="btn btn-secondary" type="button" id="copyEmailBtn">Copy email for sign-in</button>
-              </div>
-            </div>
-    </section>
-
-    <!-- Full width: Architect points planner -->
-    <section class="card glass full-width-section">
   <div class="card-header">
     <div>
       <h3>Architect points planner</h3>
@@ -455,9 +523,97 @@
   </div>
 </section>
 
+      </div>
+
+      <aside class="stack">
+        <section class="card glass">
+          <div class="card-header">
+            <div>
+              <h3>Arc network panel</h3>
+              <p>Key network settings and live status for the Arc side of the dashboard.</p>
+            </div>
+          </div>
+
+          <div class="status-list">
+            <div class="status-row"><span>RPC endpoint</span><span id="rpcEndpoint">https://rpc.testnet.arc.network</span></div>
+            <div class="status-row"><span>Explorer</span><span>testnet.arcscan.app</span></div>
+            <div class="status-row"><span>Latest block</span><span id="networkBlock">--</span></div>
+            <div class="status-row"><span>Suggested gas</span><span id="gasPrice">--</span></div>
+            <div class="status-row"><span>Last refresh</span><span id="lastRefresh">--</span></div>
+          </div>
+        </section>
+
+
+<section class="card glass">
+  <div class="card-header">
+    <div>
+      <h3>Connected mode readiness</h3>
+      <p>ArcLume stays fully working as a static site, but it is now prepared for a future supported authenticated connector when one exists.</p>
+    </div>
+    <div class="tag tag-accent" id="connectorModeTag">Static mode</div>
+  </div>
+  <div class="status-list">
+    <div class="status-row"><span>Connector state</span><span id="connectorStatus">Not configured</span></div>
+    <div class="status-row"><span>Auth endpoint</span><span id="connectorAuthEndpoint">Not set</span></div>
+    <div class="status-row"><span>Profile endpoint</span><span id="connectorProfileEndpoint">Not set</span></div>
+    <div class="status-row"><span>Callback page</span><span><a class="text-link" href="./auth/callback.html">auth/callback.html</a></span></div>
+  </div>
+  <div class="helper-note top-gap">Use <code>runtime-config.js</code> and the example worker only when you have a supported Arc House auth or profile connector.</div>
+  <div class="sub-actions top-gap">
+    <a class="ghost-btn" href="./connected-mode.html" id="openConnectedDocs">Connected mode docs</a>
+    <button class="ghost-btn" type="button" id="copyRuntimeConfigBtn">Copy runtime config</button>
+  </div>
+</section>
+
+        <section class="card glass">
+          <div class="card-header">
+            <div>
+              <h3>Why this version is stronger</h3>
+              <p>V8 is about planning, utility, and connected-mode readiness, not just more visuals.</p>
+            </div>
+          </div>
+          <div class="insight-grid">
+            <article class="insight">
+              <h4>Better trust</h4>
+              <ul>
+                <li>Clear error states</li>
+                <li>No fake fallback stats</li>
+                <li>Community source labels and refresh metadata</li>
+                <li>Auto-updating public feed architecture</li>
+              </ul>
+            </article>
+            <article class="insight">
+              <h4>Better utility</h4>
+              <ul>
+                <li>Saved profiles and auto-load</li>
+                <li>Share links and quick copy actions</li>
+                <li>Cleaner sign-in handoff</li>
+              </ul>
+            </article>
+            <article class="insight">
+              <h4>Better insight</h4>
+              <ul>
+                <li>First seen date</li>
+                <li>Activity streak and diversity</li>
+                <li>Wallet warmth badge</li>
+              </ul>
+            </article>
+            <article class="insight">
+              <h4>Better planning</h4>
+              <ul>
+                <li>Priority board filters</li>
+                <li>Architect milestones</li>
+                <li>Contribution rule cues</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </aside>
+    </section>
+
     <footer class="footer glass">
-      <span>ArcLume &middot; Arc wallet intelligence and Circle Wallet Lab on Arc Testnet.</span>
-      <span>Built on Arc &middot; Powered by Circle &middot; Live on-chain data</span>
+      <span>ArcLume V8, premium Arc wallet and Arc House companion with saved profiles, wallet insight depth, and cleaner public-data boundaries.</span>
+      <span>Live Arc Testnet checks, auto-updating public Arc House cards, architect planning, resource sync, and connected-mode readiness in one place.</span>
     </footer>
   
     <section class="card glass">
@@ -468,7 +624,7 @@
             A smart but simple Arc contributor build for Circle backend flows on Arc Testnet. Create a wallet set, create wallet A and wallet B, fund wallet A, transfer test USDC, then inspect balances before and after.
           </p>
         </div>
-        <div class="tag tag-primary">Live data</div>
+        <div class="tag tag-primary">V9 wallet lab</div>
       </div>
 
       <div class="sub-actions">
@@ -477,7 +633,9 @@
         <a class="ghost-btn" href="https://developers.circle.com/wallets/dev-controlled/create-your-first-wallet" target="_blank" rel="noreferrer">Circle Arc quickstart</a>
       </div>
 
-
+      <div class="helper-note">
+        The ArcLume frontend is ready now. To make wallet creation and transfer live, deploy the separate backend scaffold in the <code>api</code> folder and point <code>runtime-config.js</code> at it.
+      </div>
     </section>
     
   </main>
@@ -492,42 +650,33 @@
         ArcLume prepares the wallet and email context, but personal Arc House points, badges, and event history still live behind the real Arc House sign-in flow.
       </p>
 
-      <div class="modal-identity-grid">
-        <div class="modal-identity-row">
-          <span>Wallet address</span>
+      <div class="modal-grid">
+        <article class="modal-stat">
+          <span>Wallet</span>
           <strong id="modalWalletValue">Not set</strong>
-        </div>
-        <div class="modal-identity-row">
+          <small>Used for Arc network analysis inside ArcLume.</small>
+        </article>
+        <article class="modal-stat">
           <span>Email</span>
           <strong id="modalEmailValue">Not set</strong>
-        </div>
-        <div class="modal-identity-row">
-          <span>Arc score</span>
-          <strong id="modalScoreValue">--</strong>
-        </div>
-        <div class="modal-identity-row">
-          <span>Tx count</span>
-          <strong id="modalTxCountValue">--</strong>
-        </div>
-        <div class="modal-identity-row">
-          <span>Wallet type</span>
-          <strong id="modalWalletTypeValue">--</strong>
-        </div>
-        <div class="modal-identity-row">
-          <span>Private data</span>
+          <small>Optional identity prep for your Arc House session.</small>
+        </article>
+        <article class="modal-stat">
+          <span>Arc House private data</span>
           <strong>Login required</strong>
-        </div>
+          <small>Points, badges, and personal contribution history.</small>
+        </article>
       </div>
 
       <div class="modal-actions">
         <a class="btn btn-primary" href="https://community.arc.network/home" target="_blank" rel="noreferrer">Open Arc House sign in</a>
         <button class="btn btn-secondary" type="button" id="modalCopyEmail">Copy email</button>
         <button class="btn btn-secondary" type="button" id="modalCopySummary">Copy profile summary</button>
-
+        <a class="btn btn-secondary" href="./connected-mode.html" id="modalOpenConnectedDocs">Connected mode docs</a>
       </div>
 
       <div class="helper-note top-gap">
-        After signing in, check your contributions panel and compare your tier progress against the Architect docs.
+        Useful follow-ups after sign-in: check your My Contributions panel, compare your tier progress against the Architect docs, and use the contribution rules to plan your next points.
       </div>
     </div>
   </div>

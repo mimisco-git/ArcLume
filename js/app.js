@@ -1,8 +1,33 @@
 
 import { ethers } from 'https://cdn.jsdelivr.net/npm/ethers@6.13.5/+esm';
 
+
+// ── Arc Testnet Constants (from docs.arc.network) ──────────────────────────
+const ARC_RPC = "https://rpc.testnet.arc.network";
+const ARC_CHAIN_ID = 5042002;
+const ARC_CHAIN_ID_HEX = "0x4CE612";
+const USDC_ADDRESS = "0x3600000000000000000000000000000000000000"; // 6 decimals ERC-20
+const EURC_ADDRESS = "0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a"; // 6 decimals
+const USYC_ADDRESS = "0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C"; // 6 decimals
+const ERC8004_IDENTITY  = "0x8004A818BFB912233c491871b3d84c89A494BD9e";
+const ERC8004_REPUTATION = "0x8004B663056A597Dffe9eCcC1965A193B7388713";
+const ERC8004_VALIDATION = "0x8004Cb1BF31DAf7788923b405b754f57acEB4272";
+const ARCSCAN_API = "https://testnet.arcscan.app/api/v2";
+
+// Minimal ERC-20 ABI for balance reads
+const ERC20_BALANCE_ABI = [
+  "function balanceOf(address) view returns (uint256)",
+  "function decimals() view returns (uint8)"
+];
+
+// ERC-8004 minimal ABI
+const IDENTITY_ABI = ["function getAgent(address) view returns (address,string,string,uint256)"];
+const REPUTATION_ABI = ["function getEventCount(address) view returns (uint256)"];
+const VALIDATION_ABI = ["function isValidated(address) view returns (bool)"];
+
+
 const CONFIG = {
-  appName: 'ArcLume V8',
+  appName: 'ArcLume V10',
   networkName: 'Arc Testnet',
   chainId: 5042002,
   rpcUrl: 'https://rpc.testnet.arc.network',
@@ -10,9 +35,23 @@ const CONFIG = {
   explorerApi: 'https://testnet.arcscan.app/api',
   communityUrl: 'https://community.arc.network/home',
   sampleAddress: '0x8004A818BFB912233c491871b3d84c89A494BD9e',
-  profileStorageKey: 'arclume_v8_profile',
-  buildTimestamp: '2026-04-04T13:30:00Z',
-  communityDataUrl: './data/community.json'
+  profileStorageKey: 'arclume_v10_profile',
+  buildTimestamp: '2026-05-05T16:17:58Z',
+  communityDataUrl: './data/community.json',
+  // Latest Arc contract addresses (from docs.arc.network/arc/references/contract-addresses)
+  usdcAddress: '0x3600000000000000000000000000000000000000',
+  eurcAddress: '0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a',
+  usycAddress: '0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C',
+  // Chain config (native USDC uses 18 decimals for gas, ERC-20 interface uses 6)
+  nativeDecimals: 18,
+  erc20Decimals: 6,
+  chainIdHex: '0x4CEF52',
+  // Arc ecosystem links
+  faucetUrl: 'https://faucet.circle.com',
+  appKitDocs: 'https://docs.arc.network/app-kit',
+  arcDocs: 'https://docs.arc.network',
+  arcdiscord: 'https://discord.com/invite/buildonarc',
+  arcHouseUrl: 'https://community.arc.network',
 };
 
 const FALLBACK_COMMUNITY_DATA = {
@@ -336,7 +375,7 @@ function resetWalletViews() {
   els.activityList.innerHTML = '<div class="empty">No wallet checked yet. Paste an address above to load live data.</div>';
   els.activityNote.classList.add('hidden');
   els.viewWalletTag.href = CONFIG.explorerUrl;
-  if(els.quickWalletLink) els.quickWalletLink.href = CONFIG.explorerUrl;
+  els.quickWalletLink && (els.quickWalletLink.href = CONFIG.explorerUrl);
 }
 
 async function refreshNetworkPanel() {
@@ -375,23 +414,23 @@ async function loadCommunityData(force = false) {
     const data = await response.json();
     if (!data || !Array.isArray(data.items) || !Array.isArray(data.resources)) throw new Error('Community JSON shape invalid');
     state.communityData = data;
-    if(els.communityStatusTag) els.communityStatusTag.textContent = 'Auto-updating public feed';
-    if(els.communityModeText) els.communityModeText.textContent = data.meta?.sourceMode || 'Auto-updating public feed';
-    if(els.communityFeedMode) els.communityFeedMode.textContent = 'Auto-updating public feed';
+    els.communityStatusTag.textContent = 'Auto-updating public feed';
+    els.communityModeText.textContent = data.meta?.sourceMode || 'Auto-updating public feed';
+    els.communityFeedMode.textContent = 'Auto-updating public feed';
     els.communitySourceNote.textContent = data.meta?.notes || 'ArcLume loads public Arc House data from data/community.json. Private Arc House profile data still requires sign-in.';
-    if(els.communityBuildTime) els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
-    if(els.communityRefreshTime) els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+    els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
+    els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
     renderCommunity();
     if (force) showToast('Community feed refreshed');
   } catch (error) {
     console.error(error);
     state.communityData = FALLBACK_COMMUNITY_DATA;
-    if(els.communityStatusTag) els.communityStatusTag.textContent = 'Bundled static fallback';
-    if(els.communityModeText) els.communityModeText.textContent = FALLBACK_COMMUNITY_DATA.meta.sourceMode;
-    if(els.communityFeedMode) els.communityFeedMode.textContent = 'Bundled static fallback';
+    els.communityStatusTag.textContent = 'Bundled static fallback';
+    els.communityModeText.textContent = FALLBACK_COMMUNITY_DATA.meta.sourceMode;
+    els.communityFeedMode.textContent = 'Bundled static fallback';
     els.communitySourceNote.textContent = 'Community JSON could not be refreshed in this browser session, so ArcLume is using the bundled public fallback snapshot.';
-    if(els.communityBuildTime) els.communityBuildTime.textContent = formatDateTime(FALLBACK_COMMUNITY_DATA.meta.generatedAt);
-    if(els.communityRefreshTime) els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+    els.communityBuildTime.textContent = formatDateTime(FALLBACK_COMMUNITY_DATA.meta.generatedAt);
+    els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
     renderCommunity();
     if (force) showToast('Using fallback community snapshot');
   }
@@ -448,7 +487,7 @@ function renderActivities(note = '') {
   els.activityList.innerHTML = filtered.map(tx => {
     const d = tx.__details;
     const ts = new Date(Number(tx.timeStamp) * 1000).toISOString();
-    const amount = Number(tx.value || 0) > 0 ? `${formatUsdc(Number(ethers.formatUnits(tx.value || '0', 6)))} USDC` : 'Interaction';
+    const amount = Number(tx.value || 0) > 0 ? `${formatUsdc(Number(ethers.formatUnits(tx.value || '0', 18)))} USDC` : 'Interaction';
     const label = tx.functionName && tx.functionName !== '0x' ? tx.functionName : d.label;
     return `
       <article class="activity-item">
@@ -467,8 +506,8 @@ function renderActivities(note = '') {
 
 function renderCommunity() {
   const data = state.communityData || FALLBACK_COMMUNITY_DATA;
-  if(els.communityBuildTime) els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
-  if(els.communityRefreshTime) els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
+  els.communityBuildTime.textContent = formatDateTime(data.meta?.generatedAt || CONFIG.buildTimestamp);
+  els.communityRefreshTime.textContent = new Date().toLocaleTimeString();
   const items = (data.items || []).filter(item => state.communityFilter === 'all' || item.priority === state.communityFilter || item.type === state.communityFilter);
   if (!items.length) {
     els.communityFeed.innerHTML = '<div class="empty">No community cards matched the selected filter in this session.</div>';
@@ -522,6 +561,222 @@ function setWalletInsightDefaults() {
   els.walletBadgeTag.textContent = 'Fresh wallet';
 }
 
+
+
+
+
+
+// ── Feature 5: Wallet Comparison Tool ────────────────────────────────────────
+async function compareWallets() {
+  const a = document.getElementById('compareWalletA')?.value?.trim();
+  const b = document.getElementById('compareWalletB')?.value?.trim();
+  const el = document.getElementById('compareResult');
+  if (!el) return;
+  if (!a || !b) { el.innerHTML = '<div class="x402-error">Enter both wallet addresses.</div>'; return; }
+  if (!ethers.isAddress(a) || !ethers.isAddress(b)) { el.innerHTML = '<div class="x402-error">One or both addresses are invalid.</div>'; return; }
+  el.innerHTML = '<div class="loading-text">Comparing wallets...</div>';
+
+  async function getWalletStats(addr) {
+    try {
+      const [balRaw, txCount] = await Promise.all([
+        provider.getBalance(addr),
+        provider.getTransactionCount(addr)
+      ]);
+      const bal = Number(ethers.formatUnits(balRaw, 18)).toFixed(4);
+      return { addr, bal, txCount, score: Math.min(100, txCount * 3 + (parseFloat(bal) > 0 ? 20 : 0)) };
+    } catch { return { addr, bal: '—', txCount: 0, score: 0 }; }
+  }
+
+  const [statsA, statsB] = await Promise.all([getWalletStats(a), getWalletStats(b)]);
+  const short = addr => addr.slice(0,8)+'...'+addr.slice(-4);
+  const win = (vA, vB) => parseFloat(vA) > parseFloat(vB) ? 'compare-win' : '';
+
+  el.innerHTML = `
+    <div class="compare-grid">
+      <div class="compare-header"></div>
+      <div class="compare-header">${short(a)}</div>
+      <div class="compare-header">${short(b)}</div>
+
+      <div class="compare-label">Balance</div>
+      <div class="compare-val ${win(statsA.bal, statsB.bal)}">${statsA.bal} USDC</div>
+      <div class="compare-val ${win(statsB.bal, statsA.bal)}">${statsB.bal} USDC</div>
+
+      <div class="compare-label">Tx Count</div>
+      <div class="compare-val ${win(statsA.txCount, statsB.txCount)}">${statsA.txCount}</div>
+      <div class="compare-val ${win(statsB.txCount, statsA.txCount)}">${statsB.txCount}</div>
+
+      <div class="compare-label">Arc Score</div>
+      <div class="compare-val ${win(statsA.score, statsB.score)}">${statsA.score}/100</div>
+      <div class="compare-val ${win(statsB.score, statsA.score)}">${statsB.score}/100</div>
+
+      <div class="compare-label">Explorer</div>
+      <div class="compare-val"><a href="${CONFIG.explorerUrl}/address/${a}" target="_blank">View ↗</a></div>
+      <div class="compare-val"><a href="${CONFIG.explorerUrl}/address/${b}" target="_blank">View ↗</a></div>
+    </div>`;
+}
+
+// ── Feature 4: Arcscan Live Feed ─────────────────────────────────────────────
+async function fetchLiveFeed() {
+  const el = document.getElementById('liveFeedList');
+  const lastEl = document.getElementById('liveFeedLastBlock');
+  if (!el) return;
+  try {
+    // Get latest block
+    const blockNum = await provider.getBlockNumber();
+    if (lastEl) lastEl.textContent = `Block #${blockNum.toLocaleString()}`;
+    const block = await provider.getBlock(blockNum, true);
+    const txs = block?.transactions?.slice(0, 8) || [];
+    if (txs.length === 0) {
+      el.innerHTML = '<div class="empty-state">No transactions in latest block.</div>';
+      return;
+    }
+    el.innerHTML = txs.map(tx => {
+      const short = a => a ? a.slice(0,8)+'...'+a.slice(-4) : '?';
+      const val = tx.value ? Number(ethers.formatUnits(tx.value, 18)).toFixed(4) : '0';
+      return `
+        <div class="feed-row">
+          <span class="feed-hash"><a href="${CONFIG.explorerUrl}/tx/${tx.hash}" target="_blank">${tx.hash.slice(0,12)}...</a></span>
+          <span class="feed-addr">${short(tx.from)} → ${short(tx.to)}</span>
+          <span class="feed-val">${val} USDC</span>
+        </div>`;
+    }).join('');
+  } catch (e) {
+    if (el) el.innerHTML = '<div class="empty-state">Feed unavailable.</div>';
+  }
+}
+
+function startLiveFeed() {
+  fetchLiveFeed();
+  setInterval(fetchLiveFeed, 5000);
+}
+
+// ── Feature 3: x402 Payment Simulator ────────────────────────────────────────
+function buildX402Header(wallet, amount, resourceUrl) {
+  const payload = {
+    scheme: 'exact',
+    network: 'arc-testnet',
+    payload: {
+      from: wallet,
+      to: 'YOUR_SERVER_WALLET',
+      value: Math.floor(parseFloat(amount) * 1e6).toString(),
+      asset: { address: '0x3600000000000000000000000000000000000000', decimals: 6, eip712_domain: {} },
+      validFor: 300,
+      nonce: Date.now().toString(),
+    }
+  };
+  return btoa(JSON.stringify(payload));
+}
+
+async function simulateX402Payment() {
+  const url = document.getElementById('x402Url')?.value?.trim();
+  const amount = document.getElementById('x402Amount')?.value?.trim() || '0.001';
+  const wallet = document.getElementById('walletInput')?.value?.trim();
+  const resultEl = document.getElementById('x402Result');
+  if (!resultEl) return;
+  if (!wallet) { resultEl.innerHTML = '<div class="x402-error">Enter a wallet address first in the lookup section.</div>'; return; }
+  if (!url) { resultEl.innerHTML = '<div class="x402-error">Enter a resource URL to simulate.</div>'; return; }
+
+  const header = buildX402Header(wallet, amount, url);
+  resultEl.innerHTML = `
+    <div class="x402-section">
+      <div class="x402-label">Payment header (x-payment)</div>
+      <div class="x402-code">${header.slice(0, 80)}...</div>
+    </div>
+    <div class="x402-section">
+      <div class="x402-label">How it works on Arc</div>
+      <div class="x402-detail">1. Client sends GET ${url} with x-payment header</div>
+      <div class="x402-detail">2. Server validates ${amount} USDC payment on Arc testnet</div>
+      <div class="x402-detail">3. Arc settles in &lt;1 second at ~$0.01 gas</div>
+      <div class="x402-detail">4. Server returns premium content</div>
+    </div>
+    <div class="x402-section">
+      <div class="x402-label">Estimated cost</div>
+      <div class="x402-detail">Payment: ${amount} USDC &nbsp;|&nbsp; Gas: ~$0.01 USDC &nbsp;|&nbsp; Total: ~${(parseFloat(amount)+0.01).toFixed(3)} USDC</div>
+    </div>`;
+}
+
+// ── Feature 2: CCTP Transfer Tracker ─────────────────────────────────────────
+async function fetchCctpTransfers(wallet) {
+  const el = document.getElementById('cctpTransferList');
+  const badge = document.getElementById('cctpBadge');
+  if (!el) return;
+  el.innerHTML = '<div class="loading-text">Scanning CCTP activity...</div>';
+  try {
+    // Query Arcscan API for USDC token transfers
+    const url = `${CONFIG.explorerApi}?module=account&action=tokentx&address=${wallet}&contractaddress=${CONFIG.usdcAddress}&sort=desc&limit=10`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const txs = data?.result || [];
+    const crossChain = txs.filter(tx => tx.from?.toLowerCase() !== wallet.toLowerCase() || tx.to?.toLowerCase() !== wallet.toLowerCase());
+    if (badge) badge.textContent = txs.length;
+    if (txs.length === 0) {
+      el.innerHTML = '<div class="empty-state">No USDC transfers found for this wallet.</div>';
+      return;
+    }
+    el.innerHTML = txs.slice(0, 8).map(tx => {
+      const isIn = tx.to?.toLowerCase() === wallet.toLowerCase();
+      const amt = Number(ethers.formatUnits(tx.value || '0', 6)).toFixed(2);
+      const time = new Date(Number(tx.timeStamp) * 1000).toLocaleString();
+      const short = addr => addr ? addr.slice(0,8) + '...' + addr.slice(-4) : '?';
+      return `
+        <div class="cctp-row">
+          <span class="cctp-direction ${isIn ? 'cctp-in' : 'cctp-out'}">${isIn ? '↓ IN' : '↑ OUT'}</span>
+          <span class="cctp-amount">${amt} USDC</span>
+          <span class="cctp-addr">${isIn ? short(tx.from) : short(tx.to)}</span>
+          <a href="${CONFIG.explorerUrl}/tx/${tx.hash}" target="_blank" class="cctp-hash">↗ View</a>
+        </div>`;
+    }).join('');
+  } catch {
+    el.innerHTML = '<div class="empty-state">Could not load transfer history.</div>';
+  }
+}
+
+// ── Feature 1: Unified Balance (App Kit pattern) ─────────────────────────────
+// Shows estimated USDC across chains using public RPC reads
+async function fetchUnifiedBalance(wallet) {
+  const chains = [
+    { name: 'Arc Testnet', rpc: 'https://rpc.testnet.arc.network', isArc: true },
+    { name: 'Ethereum Sepolia', rpc: 'https://rpc.sepolia.org', token: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238' },
+    { name: 'Base Sepolia', rpc: 'https://sepolia.base.org', token: '0x036CbD53842c5426634e7929541eC2318f3dCF7e' },
+  ];
+
+  const ERC20_ABI = ['function balanceOf(address) view returns (uint256)', 'function decimals() view returns (uint8)'];
+  const results = [];
+
+  await Promise.allSettled(chains.map(async (chain) => {
+    try {
+      const p = new ethers.JsonRpcProvider(chain.rpc);
+      let balance = 0;
+      if (chain.isArc) {
+        const raw = await p.getBalance(wallet);
+        balance = Number(ethers.formatUnits(raw, 18));
+      } else if (chain.token) {
+        const contract = new ethers.Contract(chain.token, ERC20_ABI, p);
+        const [raw, dec] = await Promise.all([contract.balanceOf(wallet), contract.decimals()]);
+        balance = Number(ethers.formatUnits(raw, dec));
+      }
+      results.push({ chain: chain.name, balance: balance.toFixed(4), isArc: chain.isArc });
+    } catch {
+      results.push({ chain: chain.name, balance: '—', isArc: chain.isArc });
+    }
+  }));
+
+  return results;
+}
+
+function renderUnifiedBalance(results) {
+  const el = document.getElementById('unifiedBalanceGrid');
+  if (!el) return;
+  const total = results.reduce((s, r) => s + (parseFloat(r.balance) || 0), 0);
+  document.getElementById('unifiedBalanceTotal').textContent = total > 0 ? `${total.toFixed(4)} USDC` : '0 USDC';
+  el.innerHTML = results.map(r => `
+    <div class="unified-chain-row">
+      <span class="chain-name">${r.chain}${r.isArc ? ' <span class="tag tag-accent" style="font-size:10px;padding:2px 8px;">Native</span>' : ''}</span>
+      <span class="chain-balance">${r.balance} USDC</span>
+    </div>
+  `).join('');
+}
+
 async function analyzeWallet(wallet, email) {
   if (!wallet || !ethers.isAddress(wallet)) {
     setBanner('error', 'Enter a valid wallet address before running the profile analysis.');
@@ -540,7 +795,7 @@ async function analyzeWallet(wallet, email) {
   setLoading(true);
   setBanner('info', 'Running live Arc wallet analysis. Explorer-derived insights may be limited if browser access to Arcscan is unavailable.');
   els.viewWalletTag.href = `${CONFIG.explorerUrl}/address/${wallet}`;
-  if (els.quickWalletLink) if(els.quickWalletLink) els.quickWalletLink.href = `${CONFIG.explorerUrl}/address/${wallet}`;
+  if (els.quickWalletLink) els.quickWalletLink.href = `${CONFIG.explorerUrl}/address/${wallet}`;
 
   try {
     const [balanceBn, txCount, code, latestBlock] = await Promise.all([
@@ -550,7 +805,10 @@ async function analyzeWallet(wallet, email) {
       provider.getBlockNumber()
     ]);
 
-    const balance = Number(ethers.formatUnits(balanceBn, 6));
+    // Arc native USDC: use ERC-20 interface (6 decimals) per docs.arc.network
+    const usdcContract = new ethers.Contract(USDC_ADDRESS, ERC20_BALANCE_ABI, provider);
+    const erc20Balance = await usdcContract.balanceOf(wallet).catch(() => balanceBn);
+    const balance = Number(ethers.formatUnits(erc20Balance, 6)); // native USDC uses 18 decimal precision per Arc docs
     const isContract = code && code !== '0x';
     els.balanceValue.textContent = `${formatUsdc(balance)} USDC`;
     els.txCountValue.textContent = formatCompact(txCount, 0);
@@ -684,15 +942,13 @@ function copyPlannerSummary() {
 }
 
 function updateConnectedModeCard() {
-  // Section removed from UI - skip safely
-  const setText = (el, val) => { if (el) el.textContent = val; };
   const endpointAuth = CONNECTED_MODE.authEndpoint || '';
   const endpointProfile = CONNECTED_MODE.profileEndpoint || '';
   const enabled = Boolean(CONNECTED_MODE.enabled && endpointAuth && endpointProfile);
-  setText(els.connectorModeTag, enabled ? 'Connected ready' : 'Static mode');
-  setText(els.connectorStatus, enabled ? 'Configured' : 'Not configured');
-  setText(els.connectorAuthEndpoint, endpointAuth || 'Not set');
-  setText(els.connectorProfileEndpoint, endpointProfile || 'Not set');
+  els.connectorModeTag.textContent = enabled ? 'Connected ready' : 'Static mode';
+  els.connectorStatus.textContent = enabled ? 'Configured' : 'Not configured';
+  els.connectorAuthEndpoint.textContent = endpointAuth || 'Not set';
+  els.connectorProfileEndpoint.textContent = endpointProfile || 'Not set';
 }
 
 function copyRuntimeConfig() {
@@ -745,77 +1001,266 @@ function buildSnapshotText() {
 }
 
 
-// ── Wallet Connect ──────────────────────────────────────────────────────────
-async function connectWalletMetaMask() {
-  const btn = document.getElementById('walletConnectBtn');
-  const label = document.getElementById('walletConnectLabel');
-  if (!btn || !label) return;
-
-  const win = window;
-  if (!win.ethereum) {
-    showToast('No wallet found. Install MetaMask or Rabby first.');
-    return;
-  }
-
-  label.textContent = 'Connecting...';
-  btn.disabled = true;
-
+// ── Feature 1: Multi-token balance reader ──────────────────────────────────
+async function readTokenBalance(walletAddress, tokenAddress) {
   try {
-    const accounts = await win.ethereum.request({ method: 'eth_requestAccounts' });
-    if (!accounts || !accounts[0]) throw new Error('No account returned');
-    const address = accounts[0];
+    const provider = new ethers.JsonRpcProvider(ARC_RPC);
+    const contract = new ethers.Contract(tokenAddress, ERC20_BALANCE_ABI, provider);
+    const [raw, decimals] = await Promise.all([
+      contract.balanceOf(walletAddress),
+      contract.decimals().catch(() => 6n)
+    ]);
+    return Number(ethers.formatUnits(raw, decimals)).toFixed(4);
+  } catch { return null; }
+}
 
-    // Try switch to Arc testnet, add if not present
-    try {
-      await win.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x4CE612' }],
-      });
-    } catch {
-      try {
-        await win.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [{
-            chainId: '0x4CE612',
-            chainName: 'Arc Testnet',
-            nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 6 },
-            rpcUrls: ['https://rpc.testnet.arc.network'],
-            blockExplorerUrls: ['https://testnet.arcscan.app'],
-          }],
-        });
-      } catch { /* user rejected add */ }
+// ── Feature 2: CCTP transfer tracker ────────────────────────────────────────
+async function loadCctpTransfers(walletAddress) {
+  const feed = document.getElementById("cctpFeed");
+  if (!feed) return;
+  feed.innerHTML = '<div class="status-row"><span>Loading CCTP transfers...</span></div>';
+  try {
+    const res = await fetch(`${ARCSCAN_API}/addresses/${walletAddress}/transactions?limit=10`);
+    if (!res.ok) throw new Error("Arcscan unavailable");
+    const data = await res.json();
+    const txs = data.items || [];
+    if (!txs.length) {
+      feed.innerHTML = '<div class="status-row"><span>No transactions found for this address on Arc testnet.</span></div>';
+      return;
     }
-
-    // Fill wallet input and run analysis
-    if (els.walletInput) els.walletInput.value = address;
-    state.wallet = address;
-    btn.classList.add('connected');
-    label.textContent = address.slice(0, 8) + '...' + address.slice(-4);
-    showToast('Wallet connected. Running analysis...');
-    await analyzeWallet(address, els.emailInput?.value?.trim() || '');
-
+    feed.innerHTML = txs.slice(0, 8).map(tx => {
+      const value = tx.value ? (Number(tx.value) / 1e6).toFixed(2) : "0";
+      const ago = tx.timestamp ? timeAgo(new Date(tx.timestamp)) : "--";
+      const short = (addr) => addr ? `${addr.slice(0,8)}...${addr.slice(-4)}` : "--";
+      return `<div class="cctp-item">
+        <div class="cctp-row">
+          <span>Hash</span>
+          <strong><a href="https://testnet.arcscan.app/tx/${tx.hash}" target="_blank" rel="noreferrer" class="text-link">${short(tx.hash)}</a></strong>
+        </div>
+        <div class="cctp-row">
+          <span>From → To</span>
+          <strong>${short(tx.from?.hash)} → ${short(tx.to?.hash)}</strong>
+        </div>
+        <div class="cctp-row">
+          <span>Value</span><strong>${value} USDC</strong>
+        </div>
+        <div class="cctp-row">
+          <span>Time</span><strong>${ago}</strong>
+        </div>
+      </div>`;
+    }).join("");
   } catch (err) {
-    label.textContent = 'Connect wallet to auto-fill';
-    showToast(err.message || 'Connection failed.');
-  } finally {
-    btn.disabled = false;
+    feed.innerHTML = `<div class="status-row"><span>Could not load transfers: ${err.message}</span></div>`;
   }
 }
 
-function bindEvents() {
-  // Wallet connect
-  const walletConnectBtn = document.getElementById('walletConnectBtn');
-  if (walletConnectBtn) walletConnectBtn.addEventListener('click', connectWalletMetaMask);
+function timeAgo(date) {
+  const diff = Math.floor((Date.now() - date) / 1000);
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
 
-  // Use button click instead of form submit to prevent page reload
-  els.analyzeBtn.addEventListener('click', () => {
+// ── Feature 3: x402 payment header generator ────────────────────────────────
+function generateX402Header(url, amount, recipient) {
+  const amountInUnits = Math.floor(parseFloat(amount) * 1e6); // USDC 6 decimals
+  const nonce = "0x" + crypto.getRandomValues(new Uint8Array(16)).reduce((a, b) => a + b.toString(16).padStart(2, "0"), "");
+  const validAfter = Math.floor(Date.now() / 1000);
+  const validBefore = validAfter + 3600; // 1 hour
+
+  const header = {
+    "x-payment": {
+      "scheme": "exact",
+      "network": "arc-testnet",
+      "chainId": ARC_CHAIN_ID,
+      "token": USDC_ADDRESS,
+      "amount": amountInUnits.toString(),
+      "payTo": recipient,
+      "resource": url,
+      "nonce": nonce,
+      "validAfter": validAfter,
+      "validBefore": validBefore,
+      "authorization": "EIP-3009-transferWithAuthorization"
+    }
+  };
+
+  return JSON.stringify(header, null, 2);
+}
+
+// ── Feature 4: Arc live feed ─────────────────────────────────────────────────
+async function loadArcLiveFeed() {
+  const feed = document.getElementById("arcLiveFeed");
+  const tag = document.getElementById("feedStatusTag");
+  if (!feed) return;
+  try {
+    const res = await fetch(`${ARCSCAN_API}/transactions?limit=10&sort=desc`);
+    if (!res.ok) throw new Error("Feed unavailable");
+    const data = await res.json();
+    const txs = data.items || [];
+    if (!txs.length) { feed.innerHTML = '<div class="status-row"><span>No transactions yet.</span></div>'; return; }
+    feed.innerHTML = txs.map(tx => {
+      const value = tx.value ? (Number(tx.value) / 1e6).toFixed(4) : "0";
+      const ago = tx.timestamp ? timeAgo(new Date(tx.timestamp)) : "--";
+      const short = h => h ? `${h.slice(0,10)}...${h.slice(-4)}` : "--";
+      return `<div class="feed-item">
+        <span class="feed-hash"><a href="https://testnet.arcscan.app/tx/${tx.hash}" target="_blank" rel="noreferrer" class="text-link">${short(tx.hash)}</a></span>
+        <span class="feed-amount">${value} USDC</span>
+        <span class="feed-time">${ago}</span>
+      </div>`;
+    }).join("");
+    if (tag) { tag.textContent = "Live"; tag.className = "tag tag-success"; }
+  } catch {
+    if (tag) { tag.textContent = "Offline"; tag.className = "tag"; }
+    feed.innerHTML = '<div class="status-row"><span>Could not reach Arcscan API. Try refreshing.</span></div>';
+  }
+}
+
+// ── Feature 5: Wallet comparison ─────────────────────────────────────────────
+async function compareWallets() {
+  const addrA = document.getElementById("compareWalletA")?.value?.trim();
+  const addrB = document.getElementById("compareWalletB")?.value?.trim();
+  const status = document.getElementById("compareStatus");
+  const result = document.getElementById("compareResult");
+
+  if (!addrA || !addrB || !ethers.isAddress(addrA) || !ethers.isAddress(addrB)) {
+    if (status) { status.textContent = "Please enter two valid 0x wallet addresses."; status.style.display = "block"; }
+    return;
+  }
+  if (status) { status.textContent = "Loading wallet data..."; status.style.display = "block"; }
+
+  const provider = new ethers.JsonRpcProvider(ARC_RPC);
+
+  async function getWalletData(addr) {
+    const [usdcBal, eurcBal, txCount, code] = await Promise.all([
+      readTokenBalance(addr, USDC_ADDRESS),
+      readTokenBalance(addr, EURC_ADDRESS),
+      provider.getTransactionCount(addr).catch(() => "--"),
+      provider.getCode(addr).catch(() => "0x")
+    ]);
+    const isContract = code && code !== "0x" && code !== "0x0";
+    const score = Math.min(100, Math.floor(Number(txCount || 0) * 3.5 + parseFloat(usdcBal || "0") * 2));
+    return { usdc: usdcBal || "--", eurc: eurcBal || "--", tx: txCount, type: isContract ? "Contract" : "EOA", score };
+  }
+
+  const [dataA, dataB] = await Promise.all([getWalletData(addrA), getWalletData(addrB)]);
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set("compareAAddr", addrA.slice(0,20) + "..." + addrA.slice(-6));
+  set("compareAUsdc", dataA.usdc + " USDC");
+  set("compareAEurc", dataA.eurc + " EURC");
+  set("compareATx", dataA.tx);
+  set("compareAType", dataA.type);
+  set("compareAScore", dataA.score);
+  set("compareBAddr", addrB.slice(0,20) + "..." + addrB.slice(-6));
+  set("compareBUsdc", dataB.usdc + " USDC");
+  set("compareBEurc", dataB.eurc + " EURC");
+  set("compareBTx", dataB.tx);
+  set("compareBType", dataB.type);
+  set("compareBScore", dataB.score);
+
+  if (result) result.style.display = "grid";
+  if (status) status.style.display = "none";
+}
+
+// ── Feature 6: AI agent ERC-8004 checker ─────────────────────────────────────
+async function checkAgentRegistry() {
+  const addr = document.getElementById("agentAddress")?.value?.trim();
+  const result = document.getElementById("agentResult");
+  if (!addr || !ethers.isAddress(addr)) { showToast("Enter a valid 0x address"); return; }
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  try {
+    const provider = new ethers.JsonRpcProvider(ARC_RPC);
+
+    // Check identity registry
+    let identityStatus = "Not registered";
+    try {
+      const identityContract = new ethers.Contract(ERC8004_IDENTITY, IDENTITY_ABI, provider);
+      const agent = await identityContract.getAgent(addr);
+      if (agent && agent[0] !== ethers.ZeroAddress) identityStatus = "Registered ✓";
+    } catch { identityStatus = "Not registered"; }
+
+    // Check reputation count
+    let repCount = "0";
+    try {
+      const repContract = new ethers.Contract(ERC8004_REPUTATION, REPUTATION_ABI, provider);
+      const count = await repContract.getEventCount(addr);
+      repCount = count.toString();
+    } catch { repCount = "0"; }
+
+    // Check validation
+    let validationStatus = "Not validated";
+    try {
+      const valContract = new ethers.Contract(ERC8004_VALIDATION, VALIDATION_ABI, provider);
+      const validated = await valContract.isValidated(addr);
+      validationStatus = validated ? "Validated ✓" : "Not validated";
+    } catch { validationStatus = "Not validated"; }
+
+    set("agentIdentityStatus", identityStatus);
+    set("agentReputationCount", repCount + " events");
+    set("agentValidationStatus", validationStatus);
+    if (result) result.style.display = "block";
+  } catch (err) {
+    showToast("Registry check failed: " + err.message);
+  }
+}
+
+// ── Feature 7: Post-quantum badge + EURC/USYC in analyze ─────────────────────
+async function loadMultiTokenBalances(walletAddress) {
+  const [eurc, usyc] = await Promise.all([
+    readTokenBalance(walletAddress, EURC_ADDRESS),
+    readTokenBalance(walletAddress, USYC_ADDRESS),
+  ]);
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? "--"; };
+  setEl("eurcBalanceValue", eurc ? eurc + " EURC" : "0.0000 EURC");
+  setEl("usycBalanceValue", usyc ? usyc + " USYC" : "0.0000 USYC");
+
+  // Post-quantum badge: wallet is NOT quantum ready yet (mainnet feature)
+  const badge = document.getElementById("readinessBadge");
+  if (badge) {
+    badge.textContent = "Not yet (mainnet feature)";
+    badge.style.color = "var(--muted)";
+    badge.title = "Post-quantum wallet signatures arrive at Arc mainnet launch with SLH-DSA-SHA2-128s. Opt-in.";
+  }
+}
+
+// ── Wallet connect ────────────────────────────────────────────────────────────
+async function connectWalletMetaMask() {
+  const btn = document.getElementById("walletConnectBtn");
+  const label = document.getElementById("walletConnectLabel");
+  if (!btn || !label) return;
+  if (!window.ethereum) { showToast("No wallet found. Install MetaMask or Rabby."); return; }
+  label.textContent = "Connecting..."; btn.disabled = true;
+  try {
+    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    if (!accounts?.[0]) throw new Error("No account returned");
+    const address = accounts[0];
+    try {
+      await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: ARC_CHAIN_ID_HEX }] });
+    } catch {
+      try {
+        await window.ethereum.request({ method: "wallet_addEthereumChain", params: [{ chainId: ARC_CHAIN_ID_HEX, chainName: "Arc Testnet", nativeCurrency: { name: "USDC", symbol: "USDC", decimals: 6 }, rpcUrls: [ARC_RPC], blockExplorerUrls: ["https://testnet.arcscan.app"] }] });
+      } catch {}
+    }
+    if (els.walletInput) els.walletInput.value = address;
+    state.wallet = address;
+    btn.classList.add("connected");
+    label.textContent = address.slice(0, 8) + "..." + address.slice(-4);
+    showToast("Wallet connected. Running analysis...");
+    await analyzeWallet(address, els.emailInput?.value?.trim() || "");
+  } catch (err) {
+    label.textContent = "Connect wallet to auto-fill";
+    showToast(err.message || "Connection failed.");
+  } finally { btn.disabled = false; }
+}
+
+
+function bindEvents() {
+  els.profileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     analyzeWallet(els.walletInput.value.trim(), els.emailInput.value.trim());
-  });
-  // Also allow Enter key in inputs
-  [els.walletInput, els.emailInput].forEach(input => {
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') analyzeWallet(els.walletInput.value.trim(), els.emailInput.value.trim());
-    });
   });
   els.useDemoAddress.addEventListener('click', () => { els.walletInput.value = CONFIG.sampleAddress; updateJourneyAndIdentity(); showToast('Sample wallet loaded'); });
   els.saveProfileBtn.addEventListener('click', saveProfile);
@@ -828,23 +1273,11 @@ function bindEvents() {
   els.modalCopyEmail.addEventListener('click', () => copyText(els.emailInput.value.trim(), 'Email copied'));
   els.modalCopySummary.addEventListener('click', () => copyText(buildSnapshotText(), 'Summary copied'));
   els.refreshCommunityBtn.addEventListener('click', () => loadCommunityData(true));
-  els.copyRuntimeConfigBtn?.addEventListener('click', copyRuntimeConfig);
+  els.copyRuntimeConfigBtn.addEventListener('click', copyRuntimeConfig);
   els.copyPlannerSummary.addEventListener('click', copyPlannerSummary);
   els.resetPlanner.addEventListener('click', resetPlanner);
   POINT_RULES.forEach(rule => els[rule.key]?.addEventListener('input', calculatePlanner));
-  els.openSignInModal.addEventListener('click', () => {
-    // Populate modal with current state data
-    if (document.getElementById('modalScoreValue')) {
-      document.getElementById('modalScoreValue').textContent = els.scoreValue?.textContent || '--';
-    }
-    if (document.getElementById('modalTxCountValue')) {
-      document.getElementById('modalTxCountValue').textContent = els.txCountValue?.textContent || '--';
-    }
-    if (document.getElementById('modalWalletTypeValue')) {
-      document.getElementById('modalWalletTypeValue').textContent = els.walletTypeValue?.textContent || '--';
-    }
-    openModal();
-  });
+  els.openSignInModal.addEventListener('click', openModal);
   els.openSignInModalHero.addEventListener('click', openModal);
   els.openSignInFromIdentity.addEventListener('click', openModal);
   els.closeSignInModal.addEventListener('click', closeModal);
@@ -866,26 +1299,75 @@ function bindEvents() {
     }
   });
 
-  [els.walletInput, els.emailInput].forEach(input => input.addEventListener('input', () => {
+  [els.walletInput, els.emailInput].forEach(input => input.addEventListener("input", () => {
     updateJourneyAndIdentity();
-    setBanner('', '');
+    setBanner("", "");
   }));
+
+  // Wallet connect
+  document.getElementById("walletConnectBtn")?.addEventListener("click", connectWalletMetaMask);
+
+  // CCTP refresh
+  document.getElementById("refreshCctpBtn")?.addEventListener("click", () => {
+    if (state.wallet) loadCctpTransfers(state.wallet);
+    else showToast("Analyze a wallet first.");
+  });
+
+  // Live feed refresh
+  document.getElementById("refreshFeedBtn")?.addEventListener("click", loadArcLiveFeed);
+
+  // Wallet compare
+  document.getElementById("compareBtn")?.addEventListener("click", compareWallets);
+
+  // x402 simulator
+  document.getElementById("x402GenerateBtn")?.addEventListener("click", () => {
+    const url = document.getElementById("x402Url")?.value?.trim();
+    const amount = document.getElementById("x402Amount")?.value?.trim();
+    const recipient = document.getElementById("x402Recipient")?.value?.trim();
+    if (!url || !amount) { showToast("Enter a URL and amount."); return; }
+    const header = generateX402Header(url, amount, recipient || USDC_ADDRESS);
+    const output = document.getElementById("x402Output");
+    const headerEl = document.getElementById("x402Header");
+    const copyBtn = document.getElementById("x402CopyBtn");
+    if (headerEl) headerEl.textContent = header;
+    if (output) output.style.display = "block";
+    if (copyBtn) copyBtn.style.display = "inline-flex";
+  });
+
+  document.getElementById("x402CopyBtn")?.addEventListener("click", () => {
+    const header = document.getElementById("x402Header")?.textContent;
+    if (header) { navigator.clipboard?.writeText(header); showToast("x402 header copied."); }
+  });
+
+  // Agent checker
+  document.getElementById("checkAgentBtn")?.addEventListener("click", checkAgentRegistry);
+
+  // Analyze button
+  document.getElementById("analyzeBtn")?.addEventListener("click", () => {
+    analyzeWallet(els.walletInput?.value?.trim(), els.emailInput?.value?.trim());
+  });
+
+  [els.walletInput, els.emailInput].forEach(input => {
+    input?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") analyzeWallet(els.walletInput?.value?.trim(), els.emailInput?.value?.trim());
+    });
+  });
 }
 
 function init() {
-  try {
-    renderActivityFilters();
-    renderCommunityFilters();
-    renderCommunity();
-    loadCommunityData();
-    calculatePlanner();
-    updateConnectedModeCard();
-    updateJourneyAndIdentity();
-    resetWalletViews();
-    setWalletInsightDefaults();
-    refreshNetworkPanel();
-    setInterval(refreshNetworkPanel, 30000);
-    bindEvents();
+  renderActivityFilters();
+  renderCommunityFilters();
+  renderCommunity();
+  loadCommunityData();
+  calculatePlanner();
+  updateConnectedModeCard();
+  updateJourneyAndIdentity();
+  resetWalletViews();
+  setWalletInsightDefaults();
+  refreshNetworkPanel();
+  setInterval(refreshNetworkPanel, 30000);
+  startLiveFeed();
+  bindEvents();
 
   const params = new URLSearchParams(window.location.search);
   const queryWallet = params.get('address') || '';
@@ -905,9 +1387,10 @@ function init() {
 
   if (restored) showToast('Profile restored');
   if (queryWallet && ethers.isAddress(queryWallet)) analyzeWallet(queryWallet, queryEmail);
-  } catch (err) {
-    console.error('ArcLume init error:', err);
-  }
+
+  // Start live feed on load
+  loadArcLiveFeed();
+  setInterval(loadArcLiveFeed, 30000);
 }
 
 init();
