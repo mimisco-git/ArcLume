@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-05-19T15:48:24Z",
+    "generatedAt": "2026-05-19T20:07:07Z",
     "sourceMode": "Auto-updating public feed via GitHub Actions, with local JSON fallback",
     "notes": "Public Arc House and Arc Docs data only. Private Arc House profile data still requires sign-in.",
     "sources": [
@@ -94,7 +94,7 @@
       "visibility": "Public",
       "when": "2026-03-31T00:00:00Z",
       "icon": "\u25ce",
-      "summary": "Architects progress through a tiered, points-based system that rewards engagement with escalating benefits.",
+      "summary": "Architects progress through a tiered, points-based system that rewards engagement with escalating benefits. Learn more about our tiers and benefits.",
       "actionLabel": "Open tiers guide",
       "id": "tiers-benefits",
       "url": "https://community.arc.network/home/resources/architects-tiers-and-benefits"
