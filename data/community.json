@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-05-20T09:54:04Z",
+    "generatedAt": "2026-05-20T15:55:09Z",
     "sourceMode": "Auto-updating public feed via GitHub Actions, with local JSON fallback",
     "notes": "Public Arc House and Arc Docs data only. Private Arc House profile data still requires sign-in.",
     "sources": [
@@ -108,7 +108,7 @@
       "visibility": "Public",
       "when": "2026-03-31T00:00:00Z",
       "icon": "\u25c7",
-      "summary": "Arc\u2019s ambassador program recognizing individuals who actively contribute to the growth and success of the Arc ecosystem.",
+      "summary": "Arc\u2019s ambassador program recognizing individuals who actively contribute to the growth and success of the Arc ecosystem. Learn about our ambassador program.",
       "actionLabel": "Open overview",
       "id": "program-overview",
       "url": "https://community.arc.network/home/resources/architects-overview"
