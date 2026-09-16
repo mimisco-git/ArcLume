@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-09-15T21:19:13Z",
+    "generatedAt": "2026-09-16T04:47:23Z",
     "sourceMode": "Auto-updating public feed via GitHub Actions, with local JSON fallback",
     "notes": "Public Arc House and Arc Docs data only. Private Arc House profile data still requires sign-in.",
     "sources": [
@@ -150,7 +150,7 @@
       "visibility": "Public",
       "when": "2026-04-04T00:00:00Z",
       "icon": "\u2301",
-      "summary": "Set up your wallet and configure your development environment for Arc Testnet.",
+      "summary": "Set up your wallet and configure your development environment for Arc.",
       "actionLabel": "Open network docs",
       "id": "connect-arc",
       "url": "https://docs.arc.network/arc/references/connect-to-arc"
